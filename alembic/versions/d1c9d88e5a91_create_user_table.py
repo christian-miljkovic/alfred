@@ -48,4 +48,5 @@ def upgrade():
 
 
 def downgrade():
-    pass
+    op.drop_table("user")
+    op.drop_table("friend")
