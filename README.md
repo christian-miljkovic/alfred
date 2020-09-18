@@ -9,10 +9,6 @@ description
 ## Architecture
 ```mermaid
 sequenceDiagram
-  
-  participant <participant>
-
-  A->>B: brief description
 ```
 
 ## Setup
