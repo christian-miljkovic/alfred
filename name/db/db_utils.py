@@ -1,6 +1,6 @@
 import logging
 import asyncpg
-from name.core.config import (
+from alfred.core.config import (
     DATABASE_URL,
     MAX_CONNECTIONS_COUNT,
     MIN_CONNECTIONS_COUNT,

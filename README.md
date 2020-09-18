@@ -3,7 +3,7 @@ description
 
 [![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/release/python-370/)
 [![Code Style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Build Status](https://api.community.com/api/v1/teams/main/pipelines/intake/jobs/build-publish/badge)](http://concourse.uw2.dev.sms.community:8080/teams/main/pipelines/intake)
+[![Build Status](https://alfred.community.com/alfred/v1/teams/main/pipelines/intake/jobs/build-publish/badge)](http://concourse.uw2.dev.sms.community:8080/teams/main/pipelines/intake)
 
 
 ## Architecture
@@ -30,13 +30,6 @@ poetry install
 ```
 poetry config settings.virtualenvs.in-project true
 ```
-
-#### Replace Name with App Name
-crtl + f: name -> app_name
-* look for api 
-* look for name
-* look for jarvis
-* look for hubgrid
 
 #### Intialize Alembic
 1. `source .venv/bin/activate`

@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 from starlette.requests import Request
 from starlette.responses import Response
-from name.api import router as api_router
-from name.core.config import PROJECT_NAME, WEBHOOK_SECRET_TOKEN
-from name.db.db_utils import close_postgres_connection, connect_to_postgres
+from alfred.alfred import router as api_router
+from alfred.core.config import PROJECT_NAME, WEBHOOK_SECRET_TOKEN
+from alfred.db.db_utils import close_postgres_connection, connect_to_postgres
 
 app = FastAPI(title=PROJECT_NAME, docs_url=None, redoc_url=None)
 app.add_event_handler("startup", connect_to_postgres)

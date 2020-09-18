@@ -26,7 +26,7 @@ ENV G_WORKERS=1 \
     G_KEEP_ALIVE=305
 
 CMD alembic upgrade head && \
-    gunicorn name.main:app --reload\
+    gunicorn alfred.main:app --reload\
     -w ${G_WORKERS} \
     --threads ${G_THREADS} \
     -k uvicorn.workers.UvicornWorker \

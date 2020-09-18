@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  api:
+  alfred:
     build:
       context: .
       dockerfile: Dockerfile
@@ -9,16 +9,16 @@ services:
       [
         "sh",
         "-c",
-        "sleep 10 && alembic upgrade head && uvicorn name.main:app --host 0.0.0.0 --reload",
+        "sleep 10 && alembic upgrade head && uvicorn alfred.main:app --host 0.0.0.0 --reload",
       ]
     restart: on-failure:25
     environment:
-      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/name
+      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/alfred
       - G_LOG_LEVEL=warning
     env_file:
       - .env.local
     volumes:
-      - "./name:/code/name"  
+      - "./alfred:/code/alfred"  
     ports:
       - "8000:8000"
     depends_on:
@@ -29,7 +29,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=name
+      - POSTGRES_DB=alfred
     ports:
       - "5432:5432"
     volumes:

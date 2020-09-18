@@ -1,4 +1,4 @@
-from jarvis import __version__
+from alfred import __version__
 
 
 def test_version():

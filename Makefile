@@ -1,7 +1,7 @@
 DOCKER_COMPOSE_FILE = docker-compose.yml
 CI_DOCKER_COMPOSE_FILE = ci/docker-compose.yml
 GIT_COMMIT ?= $(shell git rev-parse --short HEAD)
-SERVICE ?= api
+SERVICE ?= alfred
 
 .PHONY: up build logs format ps down
 .PHONY: ci/run ci/build ci/ps ci/test ci/down
