@@ -1,0 +1,42 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Packages
+*.egg
+*.egg-info
+/dist/*
+build
+_build
+.cache
+*.so
+
+# Git
+.git
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+.coverage
+.tox
+.pytest_cache
+
+.DS_Store
+.git
+.github
+.idea/
+.python-version
+.venv
+.vscode/
+
+
+MANIFEST.in
+pip-wheel-metadata
+/setup.py
+.mypy_cache
+__pycache__
+*.pyc
+
+# CI 
+ci/
+
+hubgrid_data/
+.env.local
