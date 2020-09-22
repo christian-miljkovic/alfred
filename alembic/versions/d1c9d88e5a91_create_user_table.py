@@ -14,6 +14,7 @@ revision = 'd1c9d88e5a91'
 down_revision = None
 branch_labels = None
 depends_on = None
+uuid_type = sa.dialects.postgresql.UUID
 
 
 def upgrade():

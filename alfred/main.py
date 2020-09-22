@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from starlette.requests import Request
 from starlette.responses import Response
-from alfred.alfred import router as api_router
+from alfred.api import router as api_router
 from alfred.core.config import PROJECT_NAME, WEBHOOK_SECRET_TOKEN
 from alfred.db.db_utils import close_postgres_connection, connect_to_postgres
 
