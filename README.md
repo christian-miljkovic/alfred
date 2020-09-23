@@ -5,6 +5,11 @@ description
 [![Code Style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Build Status](https://alfred.community.com/alfred/v1/teams/main/pipelines/intake/jobs/build-publish/badge)](http://concourse.uw2.dev.sms.community:8080/teams/main/pipelines/intake)
 
+## Next Steps
+1. Use Twilio auto-pilot to take in the user information if they haven't registered before
+  - Else say `welcome back`
+  - get the payload from twilio by doing ngrok
+2. Create conversation flow to save birthdays
 
 ## Architecture
 ```mermaid
@@ -74,3 +79,6 @@ How to include add-ons such as Postgres [here](https://devcenter.heroku.com/arti
 ## Third Party Integrations
 #### <Name>
 [Name](url-link) Description
+
+### Additional Reading
+- [Twilio-AutoPilot](https://www.twilio.com/docs/autopilot/actions)

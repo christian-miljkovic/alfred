@@ -8,6 +8,7 @@ build
 _build
 .cache
 *.so
+alfred_data*
 
 # Installer logs
 pip-log.txt
