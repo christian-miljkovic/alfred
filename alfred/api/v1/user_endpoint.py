@@ -22,6 +22,7 @@ async def add_item_to_cart(request: Request, db: DataBase = Depends(get_database
         try:
             body = json.dumps(request)
             msg = twilio_helper.compose_mesage(body)
+            # TO_PHONE_NUMBER will need to be changed to the incoming message
             message = client.messages.create(
                 body="Jarvis test",
                 messaging_service_sid=config.TWILIO_ACCOUNT_MESSAGING_SID,

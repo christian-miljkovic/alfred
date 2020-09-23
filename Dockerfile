@@ -25,12 +25,13 @@ ENV G_WORKERS=1 \
     G_LOG_LEVEL=info \
     G_KEEP_ALIVE=305
 
+
 CMD alembic upgrade head && \
     gunicorn alfred.main:app --reload\
-    -w ${G_WORKERS} \
-    --threads ${G_THREADS} \
+    -w 1 \
+    --threads 6 \
     -k uvicorn.workers.UvicornWorker \
-    -b 0.0.0.0:${G_PORT} \
+    -b 0.0.0.0:$PORT \
     --log-config logging.conf \
-    --log-level=${G_LOG_LEVEL} \
-    --keep-alive=${G_KEEP_ALIVE}
+    --log-level=info \
+    --keep-alive=305

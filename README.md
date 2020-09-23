@@ -60,6 +60,12 @@ make ci/down
 
 ## Deploying
 #### Steps
+1. Build a local image and deploy it to a docker repo
+2. `heroku create <app_name>` to initialize the project from your current repo
+3. For container projects follow the container deploy instructions
+4. If the project has a db add the postgres heroku addon
+
+#### [WIP] Steps 
 1. Configure a `heroku.yml` file 
 2. Provision any add-ons and add them to the `heroku.yml` file
   - For example get the `DATABASE_URL` and add it to `heroku.yml` as a config
