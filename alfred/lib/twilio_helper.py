@@ -2,7 +2,7 @@ from alfred.core import config
 from alfred.core import utils
 from twilio.rest import Client
 
-TWILIO_CLIENT = Client(config.TWILIO_ACCOUNT_SID, config.TWILIO_ACCOUNT_AUTH_TOKEN)
+TWILIO_CLIENT = Client(config.TWILIO_ACCOUNT_SID_DEV, config.TWILIO_ACCOUNT_AUTH_TOKEN)
 
 
 class TwilioHelper:
@@ -25,3 +25,10 @@ class TwilioHelper:
         item_object = {"item": item.get("id"), "quantity": item.get("quantity")}
         new_order.append(item_object)
         return current_message.get("actions").append({"remember": {"order": new_order}})
+
+    def send_direct_message(self, message):
+        message = self.client.messages.create(
+                body=message,
+                from_=config.FROM_PHONE_NUMBER,
+                to=config.TO_PHONE_NUMBER
+            )

@@ -59,7 +59,7 @@ make ci/down
 ```
 
 ## Deploying
-#### Steps
+#### [Set-up] Steps
 1. Build a local image and deploy it to a docker repo
 2. `heroku create <app_name>` to initialize the project from your current repo
 3. For container projects follow the container deploy instructions
@@ -77,14 +77,20 @@ How to setup a `heroku.yml` file [here](https://devcenter.heroku.com/articles/bu
 
 How to include add-ons such as Postgres [here](https://devcenter.heroku.com/articles/heroku-postgresql)
 
+#### Local Hosting
+1. make up
+2. make logs
+3. ngrok http 8000 (in a new tab)
+
 ## Configuration
 #### Required
 `DATABASE_URL` - URL for the postgres database
 `WEBFLOW_SECRET_TOKEN` - Authenticate webhook requests with a secret token in the query parameter
 
 ## Third Party Integrations
-#### <Name>
-[Name](url-link) Description
+#### Twilio
+[Twilio Auto Pilot Setup](https://www.twilio.com/docs/autopilot/channels/sms) How to set up autopilot with a new phone number
 
 ### Additional Reading
-- [Twilio-AutoPilot](https://www.twilio.com/docs/autopilot/actions)
+- [Twilio Auto Pilot](https://www.twilio.com/docs/autopilot/actions) More info about Autopilot actions 
+- [Twilio Verify Phone Number](https://support.twilio.com/hc/en-us/articles/223180048-Adding-a-Verified-Phone-Number-or-Caller-ID-with-Twilio) How to verify people's phone numbers
