@@ -1,9 +1,8 @@
-# Name
+# Alfred
 description
 
 [![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/release/python-370/)
 [![Code Style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Build Status](https://alfred.community.com/alfred/v1/teams/main/pipelines/intake/jobs/build-publish/badge)](http://concourse.uw2.dev.sms.community:8080/teams/main/pipelines/intake)
 
 ## Next Steps
 1. Use Twilio auto-pilot to take in the user information if they haven't registered before
@@ -58,7 +57,7 @@ make ci/test
 make ci/down
 ```
 
-## Deploying
+## Initializing Infrastructure
 #### [Set-up] Steps
 1. Build a local image and deploy it to a docker repo
 2. `heroku create <app_name>` to initialize the project from your current repo
@@ -71,11 +70,36 @@ make ci/down
   - For example get the `DATABASE_URL` and add it to `heroku.yml` as a config
 3. Build and push the image to heroku's image registry
 
-How to deploy images to heroku image registry [link](https://devcenter.heroku.com/articles/container-registry-and-runtime)
 
-How to setup a `heroku.yml` file [here](https://devcenter.heroku.com/articles/build-docker-images-heroku-yml#creating-your-app-from-setup)
+## Deploying
+As long as you are logged in you only need to follow the Heroku steps
 
-How to include add-ons such as Postgres [here](https://devcenter.heroku.com/articles/heroku-postgresql)
+### Docker
+* Login into docker account jarvis2
+* `$ git add` to repo
+* run cmd inside directory 
+`$ docker push jarvis2/argon:latest`
+
+### Heroku 
+* Log in to Container Registry
+You must have Docker set up locally to continue. You should see output when you run this command.
+
+```$ docker ps```
+
+Now you can sign into Container Registry.
+
+```$ heroku container:login```
+
+Push your Docker-based app
+Build the Dockerfile in the current directory and push the Docker image.
+
+```$ heroku container:push web```
+
+Deploy the changes
+Release the newly pushed images to deploy your app.
+
+```$ heroku container:release web```
+
 
 #### Local Hosting
 1. make up
@@ -94,3 +118,6 @@ How to include add-ons such as Postgres [here](https://devcenter.heroku.com/arti
 ### Additional Reading
 - [Twilio Auto Pilot](https://www.twilio.com/docs/autopilot/actions) More info about Autopilot actions 
 - [Twilio Verify Phone Number](https://support.twilio.com/hc/en-us/articles/223180048-Adding-a-Verified-Phone-Number-or-Caller-ID-with-Twilio) How to verify people's phone numbers
+- [How to deploy images to heroku image registry](https://devcenter.heroku.com/articles/container-registry-and-runtime)
+- [How to setup a heroku.yml file](https://devcenter.heroku.com/articles/build-docker-images-heroku-yml#creating-your-app-from-setup)
+- [How to include add-ons such as Postgres](https://devcenter.heroku.com/articles/heroku-postgresql)
