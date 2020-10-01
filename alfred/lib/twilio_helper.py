@@ -28,7 +28,5 @@ class TwilioHelper:
 
     def send_direct_message(self, message):
         message = self.client.messages.create(
-                body=message,
-                from_=config.FROM_PHONE_NUMBER,
-                to=config.TO_PHONE_NUMBER
-            )
+            body=message, from_=config.FROM_PHONE_NUMBER, to=config.TO_PHONE_NUMBER
+        )

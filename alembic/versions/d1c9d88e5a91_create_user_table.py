@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'd1c9d88e5a91'
+revision = "d1c9d88e5a91"
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -28,8 +28,10 @@ def upgrade():
             server_default=sa.text("uuid_generate_v4()"),
             nullable=False,
         ),
-        sa.Column("full_name", sa.String, nullable=False),
+        sa.Column("first_name", sa.String, nullable=False),
+        sa.Column("last_name", sa.String, nullable=False),
         sa.Column("phone_number", sa.String, nullable=False),
+        sa.Column("birthday", sa.Date, nullable=False),
     )
 
     op.create_table(
@@ -41,10 +43,11 @@ def upgrade():
             server_default=sa.text("uuid_generate_v4()"),
             nullable=False,
         ),
-        sa.Column("full_name", sa.String, nullable=False),
+        sa.Column("user_id", uuid_type, nullable=False),
+        sa.Column("first_name", sa.String, nullable=False),
+        sa.Column("last_name", sa.String, nullable=False),
         sa.Column("phone_number", sa.String, nullable=False),
         sa.Column("birthday", sa.Date, nullable=False),
-        sa.Column("user_id", uuid_type, nullable=False),
     )
 
 
