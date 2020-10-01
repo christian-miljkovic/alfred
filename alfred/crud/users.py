@@ -1,5 +1,6 @@
 from asyncpg import Connection
 from alred.models import User
+from alfred.core.utils import validate_phone_number
 
 
 async def create_user(conn: Connection, user: User) -> User:
@@ -58,3 +59,22 @@ async def delete_user(conn: Connection, user: User) -> User:
         raise UserWarning(
             f"{str(user).capitalize()} with id {user.id} could not be deleted from the db."
         )
+
+
+async def find_user_by_phone(conn: Connection, phone_number: str) -> User:
+
+    row = await conn.fetchrow(
+        """
+        SELECT * FROM user
+        WHERE phone_number = $1
+        RETURNING *
+        """,
+        phone_number,
+    )
+    if row:
+        return User(**row)
+    else:
+        if not validate_phone_number:
+            raise UserWarning(f"Tried searching with invalid {phone_number}.")
+
+        raise UserWarning(f"Could not find USER with phone_number {phone_number}.")
