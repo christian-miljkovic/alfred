@@ -33,3 +33,13 @@ async def index(request: Request, db: DataBase = Depends(get_database)):
                 constants.FAILURE_MESSAGE
             )
             return failed_message
+
+
+@router.post("/create")
+async def create(request: Request, db: DataBase = Depends(get_database)):
+    async with db.pool.acquire() as conn:
+        try:
+            logging.warning(request)
+
+        except Exception as e:
+            logging.error(e)

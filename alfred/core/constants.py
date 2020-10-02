@@ -1,6 +1,5 @@
-NEW_CLIENT_WELCOME_MESSSAGE = (
-    "Hi, let's get started with getting to know each other. Whats your name?"
-)
+NEW_CLIENT_WELCOME_MESSSAGE = "Hi, let's get started with getting to know each other. It'll be easier from here: https://christianmmiljkovic.typeform.com/c/TRTx7YTG?"
+
 RETURNING_CLIENT_WELCOME_MESSSAGE = (
     "Hey! Hope you're having a great day! How can I help you?"
 )
