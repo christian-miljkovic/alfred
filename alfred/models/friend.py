@@ -5,7 +5,7 @@ from alfred.core.utils import validate_phone_number
 
 
 class Friend(BaseModel):
-    user_id: UUID
+    client_id: UUID
     first_name: str
     last_name: str
     phone_number: str

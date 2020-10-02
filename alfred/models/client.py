@@ -3,14 +3,14 @@ from datetime import date
 from alfred.core.utils import validate_phone_number
 
 
-class User(BaseModel):
+class Client(BaseModel):
     first_name: str
     last_name: str
     phone_number: str
     birthday: date
 
     def __str__(self):
-        return "user"
+        return "client"
 
 
 @validator("phone_number")

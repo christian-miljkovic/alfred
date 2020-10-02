@@ -1,4 +1,4 @@
+from .client import Client
 from .friend import Friend
-from .user import User
 
-__all__ = [Friend, User]
+__all__ = [Client, Friend]
