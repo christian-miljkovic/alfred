@@ -1,6 +1,6 @@
 from pydantic import BaseModel, validator
 from datetime import date
-from alfred.core.utils import validate_phone_number
+from alfred.core import utils
 
 
 class Client(BaseModel):
@@ -15,6 +15,6 @@ class Client(BaseModel):
 
 @validator("phone_number")
 def valid_quantity(cls, value):
-    if not validate_phone_number:
+    if not utils.validate_phone_number:
         raise ValueError("invalid phone number ")
     return value

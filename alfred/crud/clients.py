@@ -73,6 +73,8 @@ async def find_client_by_phone(conn: Connection, phone_number: str) -> Client:
         return Client(**row)
     else:
         if not validate_phone_number:
-            raise UserWarning(f"Tried searching with invalid {phone_number}.")
+            raise UserWarning(
+                f"Tried searching with invalid phone number {phone_number}."
+            )
 
-        raise UserWarning(f"Could not find CLIENT with phone_number {phone_number}.")
+        return None

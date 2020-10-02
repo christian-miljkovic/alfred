@@ -21,7 +21,7 @@ def upgrade():
     op.execute('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";')
 
     op.create_table(
-        "customer",
+        "client",
         sa.Column(
             "id",
             uuid_type,
