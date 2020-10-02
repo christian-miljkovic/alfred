@@ -2,8 +2,9 @@ from alfred.db.database import DataBase, get_database
 from alfred.core import config, constants, utils
 from alfred.crud import clients
 from alfred.lib import TwilioHelper
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Body, Depends, Request
 from twilio.rest import Client as TwilioClient
+from typing import Dict
 import logging
 
 router = APIRouter()
@@ -36,10 +37,10 @@ async def index(request: Request, db: DataBase = Depends(get_database)):
 
 
 @router.post("/create")
-async def create(request: Request, db: DataBase = Depends(get_database)):
+async def create(payload: Dict = Body(...), db: DataBase = Depends(get_database)):
     async with db.pool.acquire() as conn:
         try:
-            logging.warning(request)
+            logging.warning(payload)
 
         except Exception as e:
             logging.error(e)
