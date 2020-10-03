@@ -1,10 +1,11 @@
 from alfred.db.database import DataBase, get_database
-from alfred.core import config, constants, utils
+from alfred.core import config, constants, processors
 from alfred.crud import clients
-from alfred.lib import TwilioHelper
+from alfred.lib import TwilioHelper, typeform
 from fastapi import APIRouter, Body, Depends, Request
 from twilio.rest import Client as TwilioClient
 from typing import Dict
+import alfred.models as models
 import logging
 
 router = APIRouter()
@@ -16,7 +17,7 @@ client = TwilioClient(config.TWILIO_ACCOUNT_SID_PROD, config.TWILIO_ACCOUNT_AUTH
 async def index(request: Request, db: DataBase = Depends(get_database)):
     async with db.pool.acquire() as conn:
         try:
-            twilio_payload = await utils.process_twilio_request(request)
+            twilio_payload = await processors.twilio_request(request)
             existing_client = await clients.find_client_by_phone(
                 conn, twilio_payload.user_identifier
             )
@@ -40,7 +41,10 @@ async def index(request: Request, db: DataBase = Depends(get_database)):
 async def create(payload: Dict = Body(...), db: DataBase = Depends(get_database)):
     async with db.pool.acquire() as conn:
         try:
-            logging.warning(payload)
+            typeform_payload = models.TypeformPayload(**payload)
+            new_client = typeform.to_client(typeform_payload)
+            client_in_db = await clients.create_client(conn, new_client)
+            return client_in_db
 
         except Exception as e:
             logging.error(e)
