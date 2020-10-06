@@ -1,9 +1,10 @@
 from asyncpg import Connection
-from alfred.models import Client
+from alfred.models import Client, ClientInDB
 from alfred.core.utils import validate_phone_number
+from typing import Union
 
 
-async def create_client(conn: Connection, client: Client) -> Client:
+async def create_client(conn: Connection, client: Client) -> ClientInDB:
     row = await conn.fetchrow(
         f"""
         INSERT INTO {str(client)} (first_name, last_name, phone_number, birthday)
@@ -23,7 +24,7 @@ async def create_client(conn: Connection, client: Client) -> Client:
         )
 
 
-async def update_client(conn: Connection, client: Client) -> Client:
+async def update_client(conn: Connection, client: Client) -> ClientInDB:
 
     row = await conn.fetchrow(
         f"""
@@ -44,7 +45,7 @@ async def update_client(conn: Connection, client: Client) -> Client:
         )
 
 
-async def delete_client(conn: Connection, client: Client) -> Client:
+async def delete_client(conn: Connection, client: Client) -> ClientInDB:
     row = await conn.fetchrow(
         f"""
         DELETE FROM {str(client)}
@@ -61,7 +62,9 @@ async def delete_client(conn: Connection, client: Client) -> Client:
         )
 
 
-async def find_client_by_phone(conn: Connection, phone_number: str) -> Client:
+async def find_client_by_phone(
+    conn: Connection, phone_number: str
+) -> Union[ClientInDB, None]:
     row = await conn.fetchrow(
         """
         SELECT * FROM client

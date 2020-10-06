@@ -1,9 +1,9 @@
 from asyncpg import Connection
-from alfred.models import Friend
-from typing import List
+from alfred.models import Friend, FriendInDB
+from typing import List, Union
 
 
-async def create_friend(conn: Connection, friend: Friend) -> Friend:
+async def create_friend(conn: Connection, friend: Friend) -> FriendInDB:
     row = await conn.fetchrow(
         f"""
         INSERT INTO {str(friend)}(client_id, first_name, last_name, phone_number, birthday)
@@ -24,7 +24,7 @@ async def create_friend(conn: Connection, friend: Friend) -> Friend:
         )
 
 
-async def update_friend(conn: Connection, friend: Friend) -> Friend:
+async def update_friend(conn: Connection, friend: Friend) -> FriendInDB:
 
     row = await conn.fetchrow(
         f"""
@@ -46,7 +46,7 @@ async def update_friend(conn: Connection, friend: Friend) -> Friend:
         )
 
 
-async def delete_friend(conn: Connection, friend: Friend) -> Friend:
+async def delete_friend(conn: Connection, friend: Friend) -> FriendInDB:
     row = await conn.fetchrow(
         f"""
         DELETE FROM {str(friend)}
@@ -65,7 +65,7 @@ async def delete_friend(conn: Connection, friend: Friend) -> Friend:
 
 async def get_all_friends_by_client_id(
     conn: Connection, client_id: str
-) -> List[Friend]:
+) -> List[Union[FriendInDB, None]]:
     rows = await conn.fetch(
         """
         SELECT * FROM friend

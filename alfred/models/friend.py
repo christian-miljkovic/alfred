@@ -15,6 +15,11 @@ class Friend(BaseModel):
         return "friend"
 
 
+class FriendInDB(Friend):
+    created_at: date
+    updated_at: date
+
+
 @validator("phone_number")
 def valid_quantity(cls, value):
     if not utils.validate_phone_number:
