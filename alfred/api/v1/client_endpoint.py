@@ -31,9 +31,7 @@ async def index(request: Request, db: DataBase = Depends(get_database)):
             return message
         except Exception as e:
             logging.error(e)
-            failed_message = message = twilio_helper.compose_mesage(
-                constants.FAILURE_MESSAGE
-            )
+            failed_message = twilio_helper.compose_mesage(constants.FAILURE_MESSAGE)
             return failed_message
 
 
@@ -48,3 +46,5 @@ async def create(payload: Dict = Body(...), db: DataBase = Depends(get_database)
 
         except Exception as e:
             logging.error(e)
+            failed_message = twilio_helper.compose_mesage(constants.FAILURE_MESSAGE)
+            return failed_message

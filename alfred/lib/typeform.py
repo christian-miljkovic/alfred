@@ -13,9 +13,8 @@ def to_client(typeform_payload: TypeformPayload) -> Client:
     }
     for answer in answers:
         attribute = answer.get("field", {}).get("ref", None)
-        if attribute == "phone_number":
-            client_data["phone_number"] = answer.get("phone_number")
-        else:
-            client_data[attribute] = answer.get("text")
+        type_of_value = answer.get("type")
+        value = answer.get(type_of_value)
+        client_data[attribute] = value
 
     return Client(**client_data)

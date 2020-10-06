@@ -1,5 +1,6 @@
 from asyncpg import Connection
 from alfred.models import Friend
+from typing import List
 
 
 async def create_friend(conn: Connection, friend: Friend) -> Friend:
@@ -60,3 +61,23 @@ async def delete_friend(conn: Connection, friend: Friend) -> Friend:
         raise UserWarning(
             f"{str(friend).capitalize()} with id {friend.id} could not be deleted from the db."
         )
+
+
+async def get_all_friends_by_client_id(
+    conn: Connection, client_id: str
+) -> List[Friend]:
+    rows = await conn.fetch(
+        """
+        SELECT * FROM friend
+        WHERE client_id = $1
+        """,
+        client_id,
+    )
+
+    if rows:
+        return [Friend(**row) for row in rows]
+    else:
+        raise UserWarning(
+            f"Could not find friends associated with client id: {client_id}."
+        )
+        return None
