@@ -14,11 +14,10 @@ twilio_helper = TwilioHelper()
 client = TwilioClient(config.TWILIO_ACCOUNT_SID_PROD, config.TWILIO_ACCOUNT_AUTH_TOKEN)
 
 
-@router.get("/")
-async def index(payload: Dict = Body(...), db: DataBase = Depends(get_database)):
+@router.get("/{client_id}")
+async def index(client_id: str, db: DataBase = Depends(get_database)):
     async with db.pool.acquire() as conn:
         try:
-            client_id = payload.get("client_id")
             client_friends = friends.get_all_friends_by_client_id(conn, client_id)
             return utils.create_json_response(client_friends)
 
@@ -28,13 +27,12 @@ async def index(payload: Dict = Body(...), db: DataBase = Depends(get_database))
             return failed_message
 
 
-@router.post("/{client_id}")
+@router.post("/{client_id}/create")
 async def create_friends(
-    payload: Dict = Body(...), db: DataBase = Depends(get_database)
+    client_id: str, payload: Dict = Body(...), db: DataBase = Depends(get_database)
 ):
     async with db.pool.acquire() as conn:
         try:
-            client_id = payload.get("client_id")
             new_friends = payload.get("friends")
             for friend in new_friends:
                 new_friend = models.Friend(client_id=client_id, **new_friends)
@@ -42,7 +40,7 @@ async def create_friends(
 
             return JSONResponse(
                 status_code=status.HTTP_201_CREATED,
-                content=str("Successfull added friends"),
+                content=str("Successfully added friends"),
             )
 
         except Exception as e:
