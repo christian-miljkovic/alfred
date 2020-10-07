@@ -1,6 +1,7 @@
 from asyncpg import Connection
 from alfred.models import Friend, FriendInDB
 from typing import List, Union
+from uuid import UUID
 
 
 async def create_friend(conn: Connection, friend: Friend) -> FriendInDB:
@@ -46,20 +47,20 @@ async def update_friend(conn: Connection, friend: Friend) -> FriendInDB:
         )
 
 
-async def delete_friend(conn: Connection, friend: Friend) -> FriendInDB:
+async def delete_friend(conn: Connection, friend_id: UUID) -> FriendInDB:
     row = await conn.fetchrow(
-        f"""
-        DELETE FROM {str(friend)}
+        """
+        DELETE FROM friend
         WHERE id = $1
         RETURNING *
         """,
-        friend.id,
+        friend_id,
     )
     if row:
-        return friend(**row)
+        return FriendInDB(**row)
     else:
         raise UserWarning(
-            f"{str(friend).capitalize()} with id {friend.id} could not be deleted from the db."
+            f"FRIEND with id {friend_id} could not be deleted from the db."
         )
 
 

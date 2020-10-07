@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  tests:
+    build:
+      context: ..
+      dockerfile: ci/Dockerfile
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/alfred
+      - WEBHOOK_SECRET_TOKEN=RTYbMhh577opMLRb
+    depends_on:
+      - postgres
+
+  postgres:
+    image: "postgres:11-alpine"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=alfred
+    ports:
+      - "5432:5432"

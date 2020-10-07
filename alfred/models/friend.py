@@ -16,6 +16,7 @@ class Friend(BaseModel):
 
 
 class FriendInDB(Friend):
+    id: UUID
     created_at: date
     updated_at: date
 

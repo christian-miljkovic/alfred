@@ -2,6 +2,7 @@ from asyncpg import Connection
 from alfred.models import Client, ClientInDB
 from alfred.core.utils import validate_phone_number
 from typing import Union
+from uuid import UUID
 
 
 async def create_client(conn: Connection, client: Client) -> ClientInDB:
@@ -45,20 +46,20 @@ async def update_client(conn: Connection, client: Client) -> ClientInDB:
         )
 
 
-async def delete_client(conn: Connection, client: Client) -> ClientInDB:
+async def delete_client(conn: Connection, client_id: UUID) -> ClientInDB:
     row = await conn.fetchrow(
-        f"""
-        DELETE FROM {str(client)}
+        """
+        DELETE FROM client
         WHERE id = $1
         RETURNING *
         """,
-        client.id,
+        client_id,
     )
     if row:
-        return Client(**row)
+        return ClientInDB(**row)
     else:
         raise UserWarning(
-            f"{str(client).capitalize()} with id {client.id} could not be deleted from the db."
+            f"CLIENT with id {client_id} could not be deleted from the db."
         )
 
 
