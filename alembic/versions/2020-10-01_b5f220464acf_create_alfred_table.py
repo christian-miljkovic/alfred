@@ -34,7 +34,7 @@ def upgrade():
         sa.Column("phone_number", sa.String, nullable=False),
         sa.Column("birthday", sa.Date, nullable=False),
         sa.Column("created_at", sa.DateTime, server_default=sa.text("now()")),
-        sa.Column("modified_at", sa.DateTime, server_default=sa.text("now()")),
+        sa.Column("updated_at", sa.DateTime, server_default=sa.text("now()")),
     )
 
     op.create_table(
@@ -52,7 +52,7 @@ def upgrade():
         sa.Column("phone_number", sa.String, nullable=False),
         sa.Column("birthday", sa.Date, nullable=False),
         sa.Column("created_at", sa.DateTime, server_default=sa.text("now()")),
-        sa.Column("modified_at", sa.DateTime, server_default=sa.text("now()")),
+        sa.Column("updated_at", sa.DateTime, server_default=sa.text("now()")),
     )
 
 

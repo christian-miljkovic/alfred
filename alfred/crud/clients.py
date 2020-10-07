@@ -18,7 +18,7 @@ async def create_client(conn: Connection, client: Client) -> ClientInDB:
         client.birthday,
     )
     if row:
-        return Client(**row)
+        return ClientInDB(**row)
     else:
         raise UserWarning(
             f"{str(client).capitalize()} could not be inserted into the db."
@@ -39,7 +39,7 @@ async def update_client(conn: Connection, client: Client) -> ClientInDB:
         client.birthday,
     )
     if row:
-        return Client(**row)
+        return ClientInDB(**row)
     else:
         raise UserWarning(
             f"{str(client).capitalize()} with id {client.id} could not be updated."
@@ -74,7 +74,7 @@ async def find_client_by_phone(
         phone_number,
     )
     if row:
-        return Client(**row)
+        return ClientInDB(**row)
     else:
         if not validate_phone_number:
             raise UserWarning(

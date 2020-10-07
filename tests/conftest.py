@@ -8,6 +8,13 @@ nest_asyncio.apply()
 
 
 @pytest.fixture(scope="session")
+def event_loop():
+    loop = asyncio.get_event_loop()
+    yield loop
+    loop.close()
+
+
+@pytest.fixture(scope="session")
 def async_run(event_loop):
     return event_loop.run_until_complete
 
@@ -17,7 +24,8 @@ def conn(async_run):
     async_run(connect_to_postgres())
     db = async_run(get_database())
     conn = async_run(db.pool.acquire())
-    async_run(conn.execute("TRUNCATE email_details"))
+    async_run(conn.execute("TRUNCATE client"))
+    async_run(conn.execute("TRUNCATE friend"))
     yield conn
     async_run(conn.close())
     async_run(close_postgres_connection())

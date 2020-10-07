@@ -18,7 +18,7 @@ client = TwilioClient(config.TWILIO_ACCOUNT_SID_PROD, config.TWILIO_ACCOUNT_AUTH
 async def index(client_id: str, db: DataBase = Depends(get_database)):
     async with db.pool.acquire() as conn:
         try:
-            client_friends = friends.get_all_friends_by_client_id(conn, client_id)
+            client_friends = await friends.get_all_friends_by_client_id(conn, client_id)
             return utils.create_json_response(client_friends)
 
         except Exception as e:

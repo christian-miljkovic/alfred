@@ -5,12 +5,10 @@ services:
     build:
       context: ..
       dockerfile: ci/Dockerfile
-    environment:
-      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/alfred
-      - WEBHOOK_SECRET_TOKEN=RTYbMhh577opMLRb
     depends_on:
       - postgres
-
+    env_file:
+      - ../.env.local
   postgres:
     image: "postgres:11-alpine"
     environment:

@@ -8,7 +8,7 @@ async def create_friend(conn: Connection, friend: Friend) -> FriendInDB:
     row = await conn.fetchrow(
         f"""
         INSERT INTO {str(friend)}(client_id, first_name, last_name, phone_number, birthday)
-        VALUES($1, $2, $3, $4)
+        VALUES($1, $2, $3, $4, $5)
         RETURNING *
         """,
         friend.client_id,
@@ -18,7 +18,7 @@ async def create_friend(conn: Connection, friend: Friend) -> FriendInDB:
         friend.birthday,
     )
     if row:
-        return friend(**row)
+        return FriendInDB(**row)
     else:
         raise UserWarning(
             f"{str(friend).capitalize()} could not be inserted into the db."
@@ -40,7 +40,7 @@ async def update_friend(conn: Connection, friend: Friend) -> FriendInDB:
         friend.birthday,
     )
     if row:
-        return friend(**row)
+        return FriendInDB(**row)
     else:
         raise UserWarning(
             f"{str(friend).capitalize()} with id {friend.id} could not be updated."
@@ -76,7 +76,7 @@ async def get_all_friends_by_client_id(
     )
 
     if rows:
-        return [Friend(**row) for row in rows]
+        return [FriendInDB(**row) for row in rows]
     else:
         raise UserWarning(
             f"Could not find friends associated with client id: {client_id}."

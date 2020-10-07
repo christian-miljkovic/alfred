@@ -8,7 +8,7 @@ import logging
 import json
 import pytest
 
-API_PREFIX = "alfred/v1"
+API_PREFIX = "alfred/v1/friend"
 test_client = TestClient(app)
 
 
@@ -50,7 +50,10 @@ async def friend_in_db(conn, friend) -> model.FriendInDB:
 @pytest.mark.asyncio
 async def test_index_success(conn, client_in_db, friend_in_db, mocker):
     resp = test_client.get(
-        f"{API_PREFIX}/{client_in_db.id}/friend/?token={config.WEBHOOK_SECRET_TOKEN}"
+        f"{API_PREFIX}/{client_in_db.id}?token={config.WEBHOOK_SECRET_TOKEN}"
     )
     logging.warning(resp)
+    logging.warning(
+        f"{API_PREFIX}/{client_in_db.id}?token={config.WEBHOOK_SECRET_TOKEN}"
+    )
     assert resp.status_code == 200
