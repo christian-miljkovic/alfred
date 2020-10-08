@@ -35,7 +35,7 @@ async def create_friends(
 ):
     async with db.pool.acquire() as conn:
         try:
-            new_friends = payload.get("friends")
+            new_friends = payload.get("data")
             for friend in new_friends:
                 new_friend = models.Friend(client_id=client_id, **new_friends)
                 friends.create_friend(conn, new_friend)

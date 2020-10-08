@@ -1,4 +1,5 @@
 from alfred.main import app
+from pathlib import Path
 from starlette.testclient import TestClient
 import alfred.models as model
 import alfred.core.config as config
@@ -47,10 +48,32 @@ async def friend_in_db(conn, friend) -> model.FriendInDB:
     await crud.friends.delete_friend(conn, friend_in_db.id)
 
 
+@pytest.fixture(scope="module")
+def friend_payload():
+    fixture_data_folder = Path().cwd() / Path("tests/fixtures")
+    fixture_data_file = fixture_data_folder / "create_client_payload.json"
+    with open(fixture_data_file) as json_file:
+        return json.load(json_file)
+
+
 @pytest.mark.asyncio
 async def test_index_success(conn, client_in_db, friend_in_db, mocker):
     resp = test_client.get(
         f"{API_PREFIX}/{client_in_db.id}?token={config.WEBHOOK_SECRET_TOKEN}"
+    )
+    expected_resp_data = util.model_list_to_data_dict([friend_in_db])
+    expected_resp_byte = util.create_aliased_response(expected_resp_data)
+    expected_resp = json.loads(expected_resp_byte.body)
+
+    assert resp.json() == expected_resp
+    assert resp.status_code == 200
+
+
+@pytest.mark.asyncio
+async def test_create_success(conn, client_in_db, friend_in_db, friend_payload, mocker):
+    resp = test_client.get(
+        f"{API_PREFIX}/{client_in_db.id}/create?token={config.WEBHOOK_SECRET_TOKEN}",
+        json=friend_payload,
     )
     expected_resp_data = util.model_list_to_data_dict([friend_in_db])
     expected_resp_byte = util.create_aliased_response(expected_resp_data)
