@@ -3,8 +3,8 @@ from starlette.testclient import TestClient
 import alfred.models as model
 import alfred.core.config as config
 import alfred.crud as crud
+import alfred.core.utils as util
 import datetime
-import logging
 import json
 import pytest
 
@@ -52,8 +52,9 @@ async def test_index_success(conn, client_in_db, friend_in_db, mocker):
     resp = test_client.get(
         f"{API_PREFIX}/{client_in_db.id}?token={config.WEBHOOK_SECRET_TOKEN}"
     )
-    logging.warning(resp)
-    logging.warning(
-        f"{API_PREFIX}/{client_in_db.id}?token={config.WEBHOOK_SECRET_TOKEN}"
-    )
+    expected_resp_data = util.model_list_to_data_dict([friend_in_db])
+    expected_resp_byte = util.create_aliased_response(expected_resp_data)
+    expected_resp = json.loads(expected_resp_byte.body)
+
+    assert resp.json() == expected_resp
     assert resp.status_code == 200

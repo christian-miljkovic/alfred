@@ -1,3 +1,4 @@
+from fastapi.encoders import jsonable_encoder
 from starlette.responses import JSONResponse, Response
 from twilio.twiml.messaging_response import MessagingResponse
 import re
@@ -8,8 +9,16 @@ def create_text_response(response: MessagingResponse) -> Response:
     return Response(content=str(response), headers=headers)
 
 
-def create_json_response(message: dict) -> JSONResponse:
-    return JSONResponse(message)
+def model_list_to_data_dict(model_list: list) -> dict:
+    return {"data": [model.dict() for model in model_list]}
+
+
+def create_json_response(payload: dict) -> JSONResponse:
+    return JSONResponse(payload)
+
+
+def create_aliased_response(payload) -> JSONResponse:
+    return JSONResponse(content=jsonable_encoder(payload, by_alias=True))
 
 
 def validate_phone_number(phone_number: str) -> bool:
