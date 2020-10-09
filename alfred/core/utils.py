@@ -1,4 +1,5 @@
 from fastapi.encoders import jsonable_encoder
+from fastapi import status
 from starlette.responses import JSONResponse, Response
 from twilio.twiml.messaging_response import MessagingResponse
 import re
@@ -17,8 +18,10 @@ def create_json_response(payload: dict) -> JSONResponse:
     return JSONResponse(payload)
 
 
-def create_aliased_response(payload) -> JSONResponse:
-    return JSONResponse(content=jsonable_encoder(payload, by_alias=True))
+def create_aliased_response(payload, status_code=status.HTTP_200_OK) -> JSONResponse:
+    return JSONResponse(
+        content=jsonable_encoder(payload, by_alias=True), status_code=status_code
+    )
 
 
 def validate_phone_number(phone_number: str) -> bool:

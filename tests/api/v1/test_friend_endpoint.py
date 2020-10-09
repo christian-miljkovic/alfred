@@ -1,13 +1,15 @@
 from alfred.main import app
+from datetime import datetime
 from pathlib import Path
+from typing import List
 from starlette.testclient import TestClient
 import alfred.models as model
 import alfred.core.config as config
 import alfred.crud as crud
 import alfred.core.utils as util
-import datetime
 import json
 import pytest
+import logging
 
 API_PREFIX = "alfred/v1/friend"
 test_client = TestClient(app)
@@ -19,7 +21,7 @@ def client() -> model.Client:
         first_name="Christian",
         last_name="Miljkovic",
         phone_number="+12035724630",
-        birthday=datetime.datetime.now(),
+        birthday=datetime.strptime("01-24-1995", "%m-%d-%Y"),
     )
 
 
@@ -31,14 +33,30 @@ async def client_in_db(conn, client) -> model.ClientInDB:
 
 
 @pytest.fixture
-def friend(client_in_db) -> model.Friend:
+def friend_one(client_in_db) -> model.FrieFriendInDBnd:
+    return model.Friend(
+        client_id=client_in_db.id,
+        first_name="Christian",
+        last_name="Miljkovic",
+        phone_number="+12035724630",
+        birthday=datetime.strptime("01-24-1995", "%m-%d-%Y"),
+    )
+
+
+@pytest.fixture
+def friend_two(client_in_db) -> model.FriendInDB:
     return model.Friend(
         client_id=client_in_db.id,
         first_name="Erick",
         last_name="Marcello",
         phone_number="+12035006397",
-        birthday=datetime.datetime.now(),
+        birthday=datetime.strptime("01-24-2000", "%m-%d-%Y"),
     )
+
+
+@pytest.fixture
+def friend_list(friend_one, friend_two) -> List[model.Friend]:
+    return [friend_one, friend_two]
 
 
 @pytest.fixture
@@ -70,14 +88,16 @@ async def test_index_success(conn, client_in_db, friend_in_db, mocker):
 
 
 @pytest.mark.asyncio
-async def test_create_success(conn, client_in_db, friend_in_db, friend_payload, mocker):
-    resp = test_client.get(
+async def test_create_success(conn, client_in_db, friend_list, friend_payload, mocker):
+    resp = test_client.post(
         f"{API_PREFIX}/{client_in_db.id}/create?token={config.WEBHOOK_SECRET_TOKEN}",
         json=friend_payload,
     )
-    expected_resp_data = util.model_list_to_data_dict([friend_in_db])
+    expected_resp_data = util.model_list_to_data_dict(friend_list)
     expected_resp_byte = util.create_aliased_response(expected_resp_data)
     expected_resp = json.loads(expected_resp_byte.body)
+    logging.warning(expected_resp)
+    logging.warning(resp.json())
 
     assert resp.json() == expected_resp
     assert resp.status_code == 200
