@@ -9,6 +9,7 @@ import alfred.crud as crud
 import alfred.core.utils as util
 import json
 import pytest
+import uuid
 import logging
 
 API_PREFIX = "alfred/v1/friend"
@@ -33,35 +34,41 @@ async def client_in_db(conn, client) -> model.ClientInDB:
 
 
 @pytest.fixture
-def friend_one(client_in_db) -> model.FrieFriendInDBnd:
+def friend_one(client_in_db) -> model.FriendInDB:
     return model.Friend(
+        id=uuid.uuid4(),
         client_id=client_in_db.id,
         first_name="Christian",
         last_name="Miljkovic",
         phone_number="+12035724630",
         birthday=datetime.strptime("01-24-1995", "%m-%d-%Y"),
+        created_at=datetime.now(),
+        updated_at=datetime.now(),
     )
 
 
 @pytest.fixture
 def friend_two(client_in_db) -> model.FriendInDB:
-    return model.Friend(
+    return model.FriendInDB(
+        id=uuid.uuid4(),
         client_id=client_in_db.id,
         first_name="Erick",
         last_name="Marcello",
         phone_number="+12035006397",
         birthday=datetime.strptime("01-24-2000", "%m-%d-%Y"),
+        created_at=datetime.now(),
+        updated_at=datetime.now(),
     )
 
 
 @pytest.fixture
-def friend_list(friend_one, friend_two) -> List[model.Friend]:
+def friend_list(friend_one, friend_two) -> List[model.FriendInDB]:
     return [friend_one, friend_two]
 
 
 @pytest.fixture
-async def friend_in_db(conn, friend) -> model.FriendInDB:
-    friend_in_db = await crud.friends.create_friend(conn, friend)
+async def friend_in_db(conn, friend_one) -> model.FriendInDB:
+    friend_in_db = await crud.friends.create_friend(conn, friend_one)
     yield friend_in_db
     await crud.friends.delete_friend(conn, friend_in_db.id)
 
@@ -94,10 +101,37 @@ async def test_create_success(conn, client_in_db, friend_list, friend_payload, m
         json=friend_payload,
     )
     expected_resp_data = util.model_list_to_data_dict(friend_list)
-    expected_resp_byte = util.create_aliased_response(expected_resp_data)
-    expected_resp = json.loads(expected_resp_byte.body)
-    logging.warning(expected_resp)
-    logging.warning(resp.json())
+    logging.warning(expected_resp_data)
+    resp_dict = dict(resp.json())
+    result = resp_dict.get("data")
+    expected_result = expected_resp_data.get("data")
+    assert result
+    assert resp.status_code == 201
 
-    assert resp.json() == expected_resp
-    assert resp.status_code == 200
+    matched_friends = []
+    for friend in result:
+        for expected_friend in expected_result:
+            if is_same_friend(friend, expected_friend):
+                matched_friends.append(
+                    {friend.get("client_id"), str(expected_friend.get("client_id"))}
+                )
+
+    assert len(matched_friends) == len(expected_result)
+
+
+def is_same_friend(friend_one: dict, friend_two: dict):
+    fields = [
+        "client_id",
+        "first_name",
+        "last_name",
+        "phone_number",
+        "birthday",
+        "created_at",
+        "updated_at",
+    ]
+    for field in fields:
+        if (field not in friend_one or field not in friend_two) and (
+            friend_one.get(field) != friend_two.get(field)
+        ):
+            return False
+    return True
