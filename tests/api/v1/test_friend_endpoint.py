@@ -10,7 +10,6 @@ import alfred.core.utils as util
 import json
 import pytest
 import uuid
-import logging
 
 API_PREFIX = "alfred/v1/friend"
 test_client = TestClient(app)
@@ -101,7 +100,6 @@ async def test_create_success(conn, client_in_db, friend_list, friend_payload, m
         json=friend_payload,
     )
     expected_resp_data = util.model_list_to_data_dict(friend_list)
-    logging.warning(expected_resp_data)
     resp_dict = dict(resp.json())
     result = resp_dict.get("data")
     expected_result = expected_resp_data.get("data")

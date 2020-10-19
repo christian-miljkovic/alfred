@@ -47,7 +47,8 @@ async def create_friends(
                 )
                 friend_in_db = await friends.create_friend(conn, new_friend)
                 created_friends.append(friend_in_db)
-                resp = utils.model_list_to_data_dict(created_friends)
+
+            resp = utils.model_list_to_data_dict(created_friends)
             return utils.create_aliased_response(resp, status.HTTP_201_CREATED)
 
         except Exception as e:

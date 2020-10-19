@@ -82,3 +82,22 @@ async def find_client_by_phone(
             )
 
         return None
+
+
+async def find_client_by_id(
+    conn: Connection, client_id: str
+) -> Union[ClientInDB, None]:
+    row = await conn.fetchrow(
+        """
+        SELECT * FROM client
+        WHERE id = $1
+        """,
+        client_id,
+    )
+    if row:
+        return ClientInDB(**row)
+    else:
+        if not validate_phone_number:
+            raise UserWarning(f"Could not find client with id: {client_id}.")
+
+        return None

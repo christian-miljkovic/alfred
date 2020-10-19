@@ -42,7 +42,14 @@ async def create(payload: Dict = Body(...), db: DataBase = Depends(get_database)
             typeform_payload = models.TypeformPayload(**payload)
             new_client = typeform.to_client(typeform_payload)
             client_in_db = await clients.create_client(conn, new_client)
-            return client_in_db
+
+            if client_in_db:
+                twilio_helper.send_direct_message(
+                    constants.REDIRECT_TO_FRIENDS_TABLE(client_in_db.id)
+                )
+                return client_in_db
+
+            failed_message = twilio_helper.compose_mesage(constants.FAILURE_MESSAGE)
 
         except Exception as e:
             logging.error(e)
