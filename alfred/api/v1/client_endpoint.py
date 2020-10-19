@@ -44,9 +44,9 @@ async def create(payload: Dict = Body(...), db: DataBase = Depends(get_database)
             client_in_db = await clients.create_client(conn, new_client)
 
             if client_in_db:
-                twilio_helper.send_direct_message(
-                    constants.REDIRECT_TO_FRIENDS_TABLE(client_in_db.id)
-                )
+                message_to_send = constants.REDIRECT_TO_FRIENDS_TABLE(client_in_db.id)
+                to_phone_number = client_in_db.phone_number
+                twilio_helper.send_direct_message(message_to_send, to_phone_number)
                 return client_in_db
 
             failed_message = twilio_helper.compose_mesage(constants.FAILURE_MESSAGE)
