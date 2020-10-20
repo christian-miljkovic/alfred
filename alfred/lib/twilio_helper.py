@@ -2,7 +2,7 @@ from alfred.core import config
 from alfred.core import utils
 from twilio.rest import Client
 
-TWILIO_CLIENT = Client(config.TWILIO_ACCOUNT_SID_DEV, config.TWILIO_ACCOUNT_AUTH_TOKEN)
+TWILIO_CLIENT = Client(config.TWILIO_ACCOUNT_SID, config.TWILIO_ACCOUNT_AUTH_TOKEN)
 
 
 class TwilioHelper:

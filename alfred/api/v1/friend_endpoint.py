@@ -11,7 +11,7 @@ import logging
 
 router = APIRouter()
 twilio_helper = TwilioHelper()
-client = TwilioClient(config.TWILIO_ACCOUNT_SID_PROD, config.TWILIO_ACCOUNT_AUTH_TOKEN)
+client = TwilioClient(config.TWILIO_ACCOUNT_SID, config.TWILIO_ACCOUNT_AUTH_TOKEN)
 
 
 @router.get("/{client_id}")
