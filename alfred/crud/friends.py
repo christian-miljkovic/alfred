@@ -39,7 +39,7 @@ async def update_friend(conn: Connection, friend: Friend) -> FriendInDB:
         friend.first_name,
         friend.last_name,
         friend.phone_number,
-        datetime.strptime(friend.birthday, "%m-%d-%Y"),,
+        datetime.strptime(friend.birthday, "%m-%d-%Y"),
     )
     if row:
         return FriendInDB(**row)
