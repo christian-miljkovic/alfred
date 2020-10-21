@@ -1,14 +1,14 @@
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, Field, validator
 from uuid import UUID
 from datetime import date
 from alfred.core import utils
 
 
 class Friend(BaseModel):
-    client_id: UUID
-    first_name: str
-    last_name: str
-    phone_number: str
+    client_id: str = Field(None, alias="id")
+    first_name: str = Field(None, alias="firstName")
+    last_name: str = Field(None, alias="lastName")
+    phone_number: str = Field(None, alias="phoneNumber")
     birthday: date
 
     def __str__(self):

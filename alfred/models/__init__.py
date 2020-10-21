@@ -3,4 +3,11 @@ from .friend import Friend, FriendInDB
 from .twilio_payload import TwilioPayload
 from .typeform_payload import TypeformPayload
 
-__all__ = [Client, ClientInDB, Friend, FriendInDB, TwilioPayload, TypeformPayload]
+__all__ = [
+    Client,
+    ClientInDB,
+    Friend,
+    FriendInDB,
+    TwilioPayload,
+    TypeformPayload,
+]

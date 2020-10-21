@@ -38,13 +38,7 @@ async def create_friends(
             created_friends = []
             friends_list = payload.get("data")
             for friend in friends_list:
-                new_friend = models.Friend(
-                    client_id=client_id,
-                    first_name=friend.get("first_name"),
-                    last_name=friend.get("last_name"),
-                    phone_number=friend.get("phone_number"),
-                    birthday=datetime.strptime(friend.get("birthday"), "%m-%d-%Y"),
-                )
+                new_friend = models.Friend(**friend.dict())
                 friend_in_db = await friends.create_friend(conn, new_friend)
                 created_friends.append(friend_in_db)
 
