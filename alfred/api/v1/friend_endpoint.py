@@ -18,7 +18,8 @@ async def index(client_id: str, db: DataBase = Depends(get_database)):
     async with db.pool.acquire() as conn:
         try:
             client_friends = await friends.get_all_friends_by_client_id(conn, client_id)
-            resp_data = utils.model_list_to_data_dict(client_friends)
+            friend_payload = client_friends if client_friends else []
+            resp_data = utils.model_list_to_data_dict(friend_payload)
             resp = utils.create_aliased_response(resp_data)
             return resp
 
