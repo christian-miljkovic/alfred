@@ -9,7 +9,7 @@ class Friend(BaseModel):
     first_name: str = Field(None, alias="firstName")
     last_name: str = Field(None, alias="lastName")
     phone_number: str = Field(None, alias="phoneNumber")
-    birthday: date
+    birthday: str = Field(None, alias="birthday")
 
     def __str__(self):
         return "friend"

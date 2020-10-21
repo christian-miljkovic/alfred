@@ -6,7 +6,6 @@ from fastapi import APIRouter, Body, Depends, status
 from twilio.rest import Client as TwilioClient
 from typing import Dict
 import alfred.models as models
-from datetime import datetime
 import logging
 
 router = APIRouter()

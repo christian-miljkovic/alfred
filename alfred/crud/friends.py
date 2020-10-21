@@ -1,7 +1,9 @@
 from asyncpg import Connection
 from alfred.models import Friend, FriendInDB
+from datetime import datetime
 from typing import List, Union
 from uuid import UUID
+import logging
 
 
 async def create_friend(conn: Connection, friend: Friend) -> FriendInDB:
@@ -15,7 +17,7 @@ async def create_friend(conn: Connection, friend: Friend) -> FriendInDB:
         friend.first_name,
         friend.last_name,
         friend.phone_number,
-        friend.birthday,
+        datetime.strptime(friend.birthday, "%m-%d-%Y"),
     )
     if row:
         return FriendInDB(**row)
@@ -37,7 +39,7 @@ async def update_friend(conn: Connection, friend: Friend) -> FriendInDB:
         friend.first_name,
         friend.last_name,
         friend.phone_number,
-        friend.birthday,
+        datetime.strptime(friend.birthday, "%m-%d-%Y"),,
     )
     if row:
         return FriendInDB(**row)
@@ -77,8 +79,5 @@ async def get_all_friends_by_client_id(
 
     if rows:
         return [FriendInDB(**row) for row in rows]
-    else:
-        raise UserWarning(
-            f"Could not find friends associated with client id: {client_id}."
-        )
-        return None
+    logging.warning(f"Could not find friends associated with client id: {client_id}.")
+    return None
