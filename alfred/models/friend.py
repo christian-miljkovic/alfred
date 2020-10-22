@@ -5,11 +5,11 @@ from alfred.core import utils
 
 
 class Friend(BaseModel):
-    client_id: str = Field(None, alias="id")
-    first_name: str = Field(None, alias="firstName")
-    last_name: str = Field(None, alias="lastName")
-    phone_number: str = Field(None, alias="phoneNumber")
-    birthday: str = Field(None, alias="birthday")
+    client_id: UUID
+    first_name: str
+    last_name: str
+    phone_number: str
+    birthday: date
 
     def __str__(self):
         return "friend"

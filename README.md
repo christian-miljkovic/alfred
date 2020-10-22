@@ -5,8 +5,8 @@ description
 [![Code Style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ## Next Steps
-1. Convert body from alfred-table into snake case maybe use library or pydantic
-2. Add cors policy -> I think thats whats preventing the request from going through 
+1. 
+2. Re-do how errors are returned based on which endpoint
 3. Add tests for `client_endpoint` and any other functions
 4. Create scheduler 
 ## Architecture

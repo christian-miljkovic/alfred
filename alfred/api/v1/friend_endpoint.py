@@ -2,6 +2,7 @@ from alfred.db.database import DataBase, get_database
 from alfred.core import config, constants, utils
 from alfred.crud import friends
 from alfred.lib import TwilioHelper
+from datetime import datetime
 from fastapi import APIRouter, Body, Depends, status
 from twilio.rest import Client as TwilioClient
 from typing import Dict
@@ -25,8 +26,10 @@ async def index(client_id: str, db: DataBase = Depends(get_database)):
 
         except Exception as e:
             logging.error(e)
-            failed_message = twilio_helper.compose_mesage(constants.FAILURE_MESSAGE)
-            return failed_message
+            return utils.create_aliased_response(
+                {"error": constants.FAILURE_MESSAGE},
+                status_code=status.HTTP_404_NOT_FOUND,
+            )
 
 
 @router.post("/{client_id}/create")
@@ -38,7 +41,14 @@ async def create_friends(
             created_friends = []
             friends_list = payload.get("data")
             for friend in friends_list:
-                new_friend = models.Friend(**friend.dict())
+                payload = models.FriendsTablePayload(**friend)
+                new_friend = models.Friend(
+                    client_id=payload.client_id,
+                    first_name=payload.first_name,
+                    last_name=payload.last_name,
+                    phone_number=payload.last_name,
+                    birthday=datetime.strptime(payload.birthday, "%m-%d-%Y"),
+                )
                 friend_in_db = await friends.create_friend(conn, new_friend)
                 created_friends.append(friend_in_db)
 
@@ -47,5 +57,7 @@ async def create_friends(
 
         except Exception as e:
             logging.error(e)
-            failed_message = twilio_helper.compose_mesage(constants.FAILURE_MESSAGE)
-            return failed_message
+            return utils.create_aliased_response(
+                {"error": constants.FAILURE_MESSAGE},
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            )

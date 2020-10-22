@@ -1,6 +1,5 @@
 from asyncpg import Connection
 from alfred.models import Friend, FriendInDB
-from datetime import datetime
 from typing import List, Union
 from uuid import UUID
 import logging
@@ -17,7 +16,7 @@ async def create_friend(conn: Connection, friend: Friend) -> FriendInDB:
         friend.first_name,
         friend.last_name,
         friend.phone_number,
-        datetime.strptime(friend.birthday, "%m-%d-%Y"),
+        friend.birthday,
     )
     if row:
         return FriendInDB(**row)
@@ -39,7 +38,7 @@ async def update_friend(conn: Connection, friend: Friend) -> FriendInDB:
         friend.first_name,
         friend.last_name,
         friend.phone_number,
-        datetime.strptime(friend.birthday, "%m-%d-%Y"),
+        friend.birthday,
     )
     if row:
         return FriendInDB(**row)
