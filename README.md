@@ -5,10 +5,12 @@ description
 [![Code Style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ## Next Steps
-1. 
+0. Fix get friends logic
+1. Create mermaid diagram 
 2. Re-do how errors are returned based on which endpoint
 3. Add tests for `client_endpoint` and any other functions
 4. Create scheduler 
+5. Add mixpanel + google analytics
 ## Architecture
 ```mermaid
 sequenceDiagram
