@@ -7,6 +7,7 @@ from fastapi import APIRouter, Body, Depends, status
 from twilio.rest import Client as TwilioClient
 from typing import Dict
 import alfred.models as models
+import logging
 
 router = APIRouter()
 twilio_helper = TwilioHelper()
@@ -44,7 +45,7 @@ async def create_friends(client_id: str, payload: Dict = Body(...), db: DataBase
                     first_name=payload.first_name,
                     last_name=payload.last_name,
                     phone_number=payload.phone_number,
-                    birthday=datetime.strptime(payload.birthday, "%Y-%m-%d"),
+                    birthday=datetime.strptime(payload.birthday, "%m-%d-%Y"),
                 )
                 friend_in_db = await friends.create_friend(conn, new_friend)
                 created_friends.append(friend_in_db)

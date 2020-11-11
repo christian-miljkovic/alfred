@@ -10,6 +10,7 @@ description
   - Invalid input
 2. Create mermaid diagram 
 3. Add tests for `client_endpoint` and any other functions
+4. Once user is in the system be allowed to ask for table + make suggestions
 4. Create scheduler 
 5. Add mixpanel + google analytics
 ## Architecture
