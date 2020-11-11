@@ -66,18 +66,18 @@ async def create_friends(client_id: str, payload: Dict = Body(...), db: DataBase
         try:
             friend = payload.get("data")
             payload = models.FriendsTablePayload(**friend)
-                new_friend = models.Friend(
-                    client_id=client_id,
-                    first_name=payload.first_name,
-                    last_name=payload.last_name,
-                    phone_number=payload.phone_number,
-                    birthday=datetime.strptime(payload.birthday, "%Y-%m-%d"),
-                )
+            new_friend = models.Friend(
+                client_id=client_id,
+                first_name=payload.first_name,
+                last_name=payload.last_name,
+                phone_number=payload.phone_number,
+                birthday=datetime.strptime(payload.birthday, "%Y-%m-%d"),
+            )
 
             # TO SEND BACK DELETION MESSAGE
             deleted_friend = await friends.delete_friend(conn, new_friend)
-            message = 'client with id: {client_id} successfully deleted {}'
-            resp = {'data': 'client with id: {client_id} successfully delete '}
+            message = "client with id: {client_id} successfully deleted {}"
+            resp = {"data": "client with id: {client_id} successfully delete "}
 
             return utils.create_aliased_response(resp, status.HTTP_202_ACCEPTED)
 
