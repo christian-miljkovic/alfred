@@ -82,9 +82,7 @@ def friend_payload():
 
 @pytest.mark.asyncio
 async def test_index_success(conn, client_in_db, friend_in_db, mocker):
-    resp = test_client.get(
-        f"{API_PREFIX}/{client_in_db.id}?token={config.WEBHOOK_SECRET_TOKEN}"
-    )
+    resp = test_client.get(f"{API_PREFIX}/{client_in_db.id}?token={config.WEBHOOK_SECRET_TOKEN}")
     expected_resp_data = util.model_list_to_data_dict([friend_in_db])
     expected_resp_byte = util.create_aliased_response(expected_resp_data)
     expected_resp = json.loads(expected_resp_byte.body)
@@ -99,6 +97,8 @@ async def test_create_success(conn, client_in_db, friend_list, friend_payload, m
         f"{API_PREFIX}/{client_in_db.id}/create?token={config.WEBHOOK_SECRET_TOKEN}",
         json=friend_payload,
     )
+
+    # client_in_db.id should equal the client_id field here ... this was off
     expected_resp_data = util.model_list_to_data_dict(friend_list)
     resp_dict = dict(resp.json())
     result = resp_dict.get("data")
@@ -110,9 +110,7 @@ async def test_create_success(conn, client_in_db, friend_list, friend_payload, m
     for friend in result:
         for expected_friend in expected_result:
             if is_same_friend(friend, expected_friend):
-                matched_friends.append(
-                    {friend.get("client_id"), str(expected_friend.get("client_id"))}
-                )
+                matched_friends.append({friend.get("client_id"), str(expected_friend.get("client_id"))})
 
     assert len(matched_friends) == len(expected_result)
 
@@ -128,8 +126,6 @@ def is_same_friend(friend_one: dict, friend_two: dict):
         "updated_at",
     ]
     for field in fields:
-        if (field not in friend_one or field not in friend_two) and (
-            friend_one.get(field) != friend_two.get(field)
-        ):
+        if (field not in friend_one or field not in friend_two) and (friend_one.get(field) != friend_two.get(field)):
             return False
     return True
