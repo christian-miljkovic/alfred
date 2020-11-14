@@ -1,0 +1,1 @@
+from .send_birthday_reminders import send_birthday_reminders

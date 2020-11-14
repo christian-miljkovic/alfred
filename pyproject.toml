@@ -17,6 +17,7 @@ requests = "^2.22"
 twilio = "^6.38.0"
 uvicorn = "^0.8.2"
 black = "^20.8b1"
+APScheduler = "^3.6.3"
 
 
 [tool.poetry.dev-dependencies]
