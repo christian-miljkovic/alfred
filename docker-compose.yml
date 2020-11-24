@@ -18,7 +18,7 @@ services:
     env_file:
       - .env.local
     volumes:
-      - "./alfred:/code/alfred"  
+      - "./alfred:/code/alfred"
     ports:
       - "8000:8000"
     depends_on:

@@ -1,4 +1,4 @@
-#!/Users/christianmiljkovic/projects/alfred/.venv/bin/python
+#!/Users/christianmiljkovic/coding/alfred/.venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
