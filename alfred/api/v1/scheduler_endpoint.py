@@ -1,4 +1,5 @@
 from alfred.crud import clients
+from alfred.db.database import DataBase, get_database
 from alfred.lib import TwilioHelper, to_client as typeform_to_client
 from fastapi import APIRouter, Body, Depends, Request
 from twilio.rest import Client as TwilioClient
