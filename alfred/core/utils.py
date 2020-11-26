@@ -1,7 +1,9 @@
+from alfred.core import constants
 from fastapi.encoders import jsonable_encoder
 from fastapi import status
 from starlette.responses import JSONResponse, Response
 from twilio.twiml.messaging_response import MessagingResponse
+from typing import DefaultDict, List
 import re
 
 
@@ -23,6 +25,9 @@ def create_aliased_response(payload, status_code=status.HTTP_200_OK) -> JSONResp
         content=jsonable_encoder(payload, by_alias=True), status_code=status_code
     )
 
+def create_birthday_reminder_responses(payload: DefaultDict) -> List[str]:
+    # convert to messages 
+    pass
 
 def validate_phone_number(phone_number: str) -> bool:
     if len(phone_number) != 12:
