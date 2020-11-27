@@ -1,6 +1,6 @@
 from alfred.core.config import REACT_APP_URL
 
-BIRTHDAY_REMINDER_MESSAGE = (lambda friend_list: f"It's {','.join(friend_list)} birthday today! Don't forget to send them some love today!")
+BIRTHDAY_REMINDER_MESSAGE = (lambda friend_list: f"It's {', '.join(friend_list)} birthday today! Don't forget to send them some love today!")
 
 FAILURE_MESSAGE = "Sorry, something went wrong on my end. Text +12035724630 to have this issue resolved immediately thank you!"
 
