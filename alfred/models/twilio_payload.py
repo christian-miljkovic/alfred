@@ -13,8 +13,6 @@ class TwilioPayload(BaseModel):
     assistant_sid: str = Field(None, alias="AssistantSid")
     user_identifier: str = Field(None, alias="UserIdentifier")
     account_sid: str = Field(None, alias="AccountSid")
-    current_input: str = Field(None, alias="")
-    current_input: str = Field(None, alias="")
 
     def __str__(self):
         return "twilio_payload"

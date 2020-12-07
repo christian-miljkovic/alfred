@@ -13,3 +13,5 @@ FAILURE_MESSAGE = "Sorry, something went wrong on my end. Text +12035724630 to h
 REDIRECT_TO_FRIENDS_TABLE = (
     lambda client_id: f"Head on over to {REACT_APP_URL}/table/{client_id} to add some friends birthdays!"
 )
+
+RECOMMENDATION_MESSAGE = "Thanks for your recommendation, I'll be sure to start cookin' on that!"
