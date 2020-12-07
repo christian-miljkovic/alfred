@@ -1,4 +1,5 @@
 from alfred.crud import clients
+from alfred.db.database import DataBase, get_database
 from fastapi import APIRouter, Depends, Request
 
 router = APIRouter()

@@ -10,7 +10,7 @@ description
 - do messaging and send to client message about friends bday
 
 0. Add delete and update friend
-1. Re-do how errors are returned based on which endpoint
+1. Re-do how errors are returned based on which endpoint -> https://github.com/andy-landy/traceback_with_variables
 
 - Invalid input
 
