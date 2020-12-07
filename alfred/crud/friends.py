@@ -80,3 +80,20 @@ async def get_all_friends_by_client_id(
         return [FriendInDB(**row) for row in rows]
     logging.warning(f"Could not find friends associated with client id: {client_id}.")
     return None
+
+
+async def get_friends_by_date(conn: Connection, date_dict: dict) -> List[Union[FriendInDB, None]]:
+    day = date_dict.get("day", "-1")
+    month = date_dict.get("month", "-1")
+    rows = await conn.fetch(
+        """
+        SELECT * FROM friend
+        WHERE  date_part('day', birthday) = $1 AND date_part('month', birthday) = $2
+        """,
+        day,
+        month,
+    )
+    if rows:
+        return [FriendInDB(**row) for row in rows]
+    logging.warning(f"No friends with birthdays on {month}/{day}")
+    return None

@@ -3,6 +3,7 @@ from alfred.models import Client, ClientInDB
 from alfred.core.utils import validate_phone_number
 from typing import Union
 from uuid import UUID
+import logging
 
 
 async def create_client(conn: Connection, client: Client) -> ClientInDB:
@@ -99,5 +100,5 @@ async def find_client_by_id(
     else:
         if not validate_phone_number:
             raise UserWarning(f"Could not find client with id: {client_id}.")
-
+        logging.warning(f"Could not find client with id: {client_id}.")
         return None
