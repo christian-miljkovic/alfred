@@ -4,7 +4,7 @@ from alfred.db.database import DataBase, get_database
 from alfred.lib import TwilioHelper
 from fastapi import APIRouter, Depends, Request
 import logging
-
+import json
 import requests
 
 twilio_helper = TwilioHelper()
@@ -20,9 +20,8 @@ async def index(request: Request, db: DataBase = Depends(get_database)):
             twilio_payload = await processors.twilio_request(request)
             existing_client = await clients.find_client_by_phone(conn, twilio_payload.user_identifier)
             if existing_client:
-                req = {"client_id": existing_client.id, "message": twilio_payload.current_input}
-                json_data = utils.create_aliased_response(req)
-                response = await requests.post(f"{config.RECOMMENDATION_APP_URL}/recommendations", data=json_data)
+                req = {"client_id": str(existing_client.id), "message": twilio_payload.current_input}
+                response = await requests.post(f"{config.RECOMMENDATION_APP_URL}/recommendations", data=json.dumps(req))
                 logging.warning(response)
                 message = twilio_helper.compose_mesage(f"{constants.RECOMMENDATION_MESSAGE}")
                 return message
