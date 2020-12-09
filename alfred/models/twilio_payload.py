@@ -15,4 +15,16 @@ class TwilioPayload(BaseModel):
     account_sid: str = Field(None, alias="AccountSid")
 
     def __str__(self):
-        return "twilio_payload"
+        return f'''
+            current_task: {self.current_task},
+            current_input: {self.current_input},
+            dialogue_sid: {self.dialogue_sid},
+            memory: {self.memory},
+            dialogue_payload_url: {self.dialogue_payload_url},
+            channel: {self.channel},
+            next_best_task: {self.next_best_task},
+            current_task_confidence: {self.current_task_confidence},
+            assistant_sid: {self.assistant_sid},
+            user_identifier: {self.user_identifier},
+            account_sid: {self.account_sid}
+            '''
