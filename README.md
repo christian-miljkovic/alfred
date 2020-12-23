@@ -121,12 +121,12 @@ Now you can sign into Container Registry.
 Push your Docker-based app
 Build the Dockerfile in the current directory and push the Docker image.
 
-`$ heroku container:push web`
+`$ heroku container:push web -a alfred-penny`
 
 Deploy the changes
 Release the newly pushed images to deploy your app.
 
-`$ heroku container:release web`
+`$ heroku container:release web -a alfred-penny`
 
 #### Local Hosting
 
