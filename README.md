@@ -7,12 +7,12 @@ description
 
 ## Next Steps
 
-- do messaging and send to client message about friends bday
+1. If user is signed up to give them options of what they can do aka see friends table
+2. Add delete and update friend
+3. Re-do how errors are returned based on which endpoint -> https://github.com/andy-landy/traceback_with_variables
 
-0. Add delete and update friend
-1. Re-do how errors are returned based on which endpoint -> https://github.com/andy-landy/traceback_with_variables
-
-- Invalid input
+- Double Note: Before any real users get on place integration tests on everything
+- Note: if dyno is not spun up, then user will get an error and twilio will not respond
 
 2. Create mermaid diagram
 3. Add tests for `client_endpoint` and any other functions
