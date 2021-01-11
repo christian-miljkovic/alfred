@@ -7,7 +7,7 @@ description
 
 ## Next Steps
 
-1. If user is signed up to give them options of what they can do aka see friends table
+1. Remember messages for next day
 2. Add delete and update friend
 3. Re-do how errors are returned based on which endpoint -> https://github.com/andy-landy/traceback_with_variables
 
@@ -27,6 +27,15 @@ sequenceDiagram
 ```
 
 ## Setup
+
+## Testing
+
+This repository uses [pytest](https://docs.pytest.org/en/stable/usage.html) to perform testing
+To run tests in a module:
+`pytest test_mod.py`
+
+To run tests from python:
+`python -m pytest [...]`
 
 #### Install [Poetry](https://poetry.eustace.io)
 

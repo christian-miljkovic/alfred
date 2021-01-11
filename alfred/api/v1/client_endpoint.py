@@ -18,7 +18,7 @@ async def index(request: Request, db: DataBase = Depends(get_database)):
     async with db.pool.acquire() as conn:
         try:
             twilio_payload = await processors.twilio_request(request)
-            existing_client = await clients.find_client_by_phone(conn, twilio_payload.user_identifier)
+            existing_client = await clients.find_client_by_phone(conn, twilio_payload.user_phone_number)
             if existing_client:
                 return twilio_helper.compose_mesage(
                     f"{constants.RETURNING_CLIENT_WELCOME_MESSSAGE} {existing_client.first_name}"
@@ -47,6 +47,21 @@ async def create(payload: Dict = Body(...), db: DataBase = Depends(get_database)
 
             failed_message = twilio_helper.compose_mesage(constants.FAILURE_MESSAGE)
 
+        except Exception as e:
+            logging.error(e)
+            failed_message = twilio_helper.compose_mesage(constants.FAILURE_MESSAGE)
+            return failed_message
+
+
+@router.post("/friends_table")
+async def show_friends_table(request: Request, db: DataBase = Depends(get_database)):
+    async with db.pool.acquire() as conn:
+        try:
+            twilio_payload = await processors.twilio_request(request)
+            client = await clients.find_client_by_phone(conn, twilio_payload.user_phone_number)
+            message_to_send = constants.GET_FRIENDS_TABLE(str(client.id))
+            logging.warning(message_to_send)
+            return twilio_helper.compose_mesage(f"{message_to_send}")
         except Exception as e:
             logging.error(e)
             failed_message = twilio_helper.compose_mesage(constants.FAILURE_MESSAGE)

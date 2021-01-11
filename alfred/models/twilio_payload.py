@@ -11,7 +11,7 @@ class TwilioPayload(BaseModel):
     next_best_task: str = Field(None, alias="NextBestTask")
     current_task_confidence: str = Field(None, alias="CurrentTaskConfidence")
     assistant_sid: str = Field(None, alias="AssistantSid")
-    user_identifier: str = Field(None, alias="UserIdentifier")
+    user_phone_number: str = Field(None, alias="UserIdentifier")
     account_sid: str = Field(None, alias="AccountSid")
 
     def __str__(self):
@@ -25,6 +25,6 @@ class TwilioPayload(BaseModel):
             next_best_task: {self.next_best_task},
             current_task_confidence: {self.current_task_confidence},
             assistant_sid: {self.assistant_sid},
-            user_identifier: {self.user_identifier},
+            user_phone_number: {self.user_phone_number},
             account_sid: {self.account_sid}
             '''

@@ -1,9 +1,9 @@
 from alfred.db.database import DataBase, get_database
-from alfred.core import config, constants, utils
+from alfred.core import config, constants, processors, utils
 from alfred.crud import friends
 from alfred.lib import TwilioHelper
 from datetime import datetime
-from fastapi import APIRouter, Body, Depends, status
+from fastapi import APIRouter, Body, Depends, Request, status
 from twilio.rest import Client as TwilioClient
 from typing import Dict
 import alfred.models as models
@@ -62,7 +62,7 @@ async def create_friends(client_id: str, payload: Dict = Body(...), db: DataBase
 
 
 @router.post("/{client_id}/delete")
-async def create_friends(client_id: str, payload: Dict = Body(...), db: DataBase = Depends(get_database)):
+async def delete_friends(client_id: str, payload: Dict = Body(...), db: DataBase = Depends(get_database)):
     async with db.pool.acquire() as conn:
         try:
             friend = payload.get("data")
