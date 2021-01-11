@@ -21,7 +21,7 @@ def client() -> model.Client:
         first_name="Christian",
         last_name="Miljkovic",
         phone_number="+12035724630",
-        birthday=datetime.strptime("01-24-1995", "%m-%d-%Y"),
+        birthday=datetime.strptime("1995-01-24", "%Y-%m-%d"),
     )
 
 
@@ -40,7 +40,7 @@ def friend_one(client_in_db) -> model.FriendInDB:
         first_name="Christian",
         last_name="Miljkovic",
         phone_number="+12035724630",
-        birthday=datetime.strptime("01-24-1995", "%m-%d-%Y"),
+        birthday=datetime.strptime("1995-01-24", "%Y-%m-%d"),
         created_at=datetime.now(),
         updated_at=datetime.now(),
     )
@@ -54,7 +54,7 @@ def friend_two(client_in_db) -> model.FriendInDB:
         first_name="Erick",
         last_name="Marcello",
         phone_number="+12035006397",
-        birthday=datetime.strptime("01-24-2000", "%m-%d-%Y"),
+        birthday=datetime.strptime("2000-01-24", "%Y-%m-%d"),
         created_at=datetime.now(),
         updated_at=datetime.now(),
     )
