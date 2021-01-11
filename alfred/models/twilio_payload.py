@@ -15,7 +15,7 @@ class TwilioPayload(BaseModel):
     account_sid: str = Field(None, alias="AccountSid")
 
     def __str__(self):
-        return f'''
+        return f"""
             current_task: {self.current_task},
             current_input: {self.current_input},
             dialogue_sid: {self.dialogue_sid},
@@ -27,4 +27,4 @@ class TwilioPayload(BaseModel):
             assistant_sid: {self.assistant_sid},
             user_phone_number: {self.user_phone_number},
             account_sid: {self.account_sid}
-            '''
+            """

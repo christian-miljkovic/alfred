@@ -21,9 +21,7 @@ async def create_friend(conn: Connection, friend: Friend) -> FriendInDB:
     if row:
         return FriendInDB(**row)
     else:
-        raise UserWarning(
-            f"{str(friend).capitalize()} could not be inserted into the db."
-        )
+        raise UserWarning(f"{str(friend).capitalize()} could not be inserted into the db.")
 
 
 async def update_friend(conn: Connection, friend: Friend) -> FriendInDB:
@@ -43,9 +41,7 @@ async def update_friend(conn: Connection, friend: Friend) -> FriendInDB:
     if row:
         return FriendInDB(**row)
     else:
-        raise UserWarning(
-            f"{str(friend).capitalize()} with id {friend.id} could not be updated."
-        )
+        raise UserWarning(f"{str(friend).capitalize()} with id {friend.id} could not be updated.")
 
 
 async def delete_friend(conn: Connection, friend_id: UUID) -> FriendInDB:
@@ -60,14 +56,10 @@ async def delete_friend(conn: Connection, friend_id: UUID) -> FriendInDB:
     if row:
         return FriendInDB(**row)
     else:
-        raise UserWarning(
-            f"FRIEND with id {friend_id} could not be deleted from the db."
-        )
+        raise UserWarning(f"FRIEND with id {friend_id} could not be deleted from the db.")
 
 
-async def get_all_friends_by_client_id(
-    conn: Connection, client_id: str
-) -> List[Union[FriendInDB, None]]:
+async def get_all_friends_by_client_id(conn: Connection, client_id: str) -> List[Union[FriendInDB, None]]:
     rows = await conn.fetch(
         """
         SELECT * FROM friend

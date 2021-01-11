@@ -21,9 +21,7 @@ async def create_client(conn: Connection, client: Client) -> ClientInDB:
     if row:
         return ClientInDB(**row)
     else:
-        raise UserWarning(
-            f"{str(client).capitalize()} could not be inserted into the db."
-        )
+        raise UserWarning(f"{str(client).capitalize()} could not be inserted into the db.")
 
 
 async def update_client(conn: Connection, client: Client) -> ClientInDB:
@@ -42,9 +40,7 @@ async def update_client(conn: Connection, client: Client) -> ClientInDB:
     if row:
         return ClientInDB(**row)
     else:
-        raise UserWarning(
-            f"{str(client).capitalize()} with id {client.id} could not be updated."
-        )
+        raise UserWarning(f"{str(client).capitalize()} with id {client.id} could not be updated.")
 
 
 async def delete_client(conn: Connection, client_id: UUID) -> ClientInDB:
@@ -59,14 +55,10 @@ async def delete_client(conn: Connection, client_id: UUID) -> ClientInDB:
     if row:
         return ClientInDB(**row)
     else:
-        raise UserWarning(
-            f"CLIENT with id {client_id} could not be deleted from the db."
-        )
+        raise UserWarning(f"CLIENT with id {client_id} could not be deleted from the db.")
 
 
-async def find_client_by_phone(
-    conn: Connection, phone_number: str
-) -> Union[ClientInDB, None]:
+async def find_client_by_phone(conn: Connection, phone_number: str) -> Union[ClientInDB, None]:
     row = await conn.fetchrow(
         """
         SELECT * FROM client
@@ -78,16 +70,12 @@ async def find_client_by_phone(
         return ClientInDB(**row)
     else:
         if not validate_phone_number:
-            raise UserWarning(
-                f"Tried searching with invalid phone number {phone_number}."
-            )
+            raise UserWarning(f"Tried searching with invalid phone number {phone_number}.")
 
         return None
 
 
-async def find_client_by_id(
-    conn: Connection, client_id: str
-) -> Union[ClientInDB, None]:
+async def find_client_by_id(conn: Connection, client_id: str) -> Union[ClientInDB, None]:
     row = await conn.fetchrow(
         """
         SELECT * FROM client

@@ -9,6 +9,7 @@ import logging
 router = APIRouter()
 twilio_helper = TwilioHelper()
 
+
 @router.post("/")
 async def index(request: Request, db: DataBase = Depends(get_database)):
     async with db.pool.acquire() as conn:
@@ -22,12 +23,12 @@ async def index(request: Request, db: DataBase = Depends(get_database)):
             for client_id, friend_names in client_map.items():
                 client = await clients.find_client_by_id(conn, client_id)
                 if client:
-                    phone_number_to_msg_map[client.phone_number] = constants.BIRTHDAY_REMINDER_MESSAGE(friend_names)                                    
-            
-            for phone_number, message in phone_number_to_msg_map.items(): 
+                    phone_number_to_msg_map[client.phone_number] = constants.BIRTHDAY_REMINDER_MESSAGE(friend_names)
+
+            for phone_number, message in phone_number_to_msg_map.items():
                 twilio_helper.send_direct_message(message, phone_number)
 
-            return utils.create_aliased_response({'data': phone_number_to_msg_map}, status.HTTP_202_ACCEPTED)
+            return utils.create_aliased_response({"data": phone_number_to_msg_map}, status.HTTP_202_ACCEPTED)
         except Exception as e:
             logging.error(e)
             return utils.create_aliased_response(

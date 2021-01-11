@@ -27,6 +27,4 @@ class TwilioHelper:
         return current_message.get("actions").append({"remember": {"order": new_order}})
 
     def send_direct_message(self, message, to_phone_number=config.TO_PHONE_NUMBER):
-        message = self.client.messages.create(
-            body=message, from_=config.FROM_PHONE_NUMBER, to=to_phone_number
-        )
+        message = self.client.messages.create(body=message, from_=config.FROM_PHONE_NUMBER, to=to_phone_number)

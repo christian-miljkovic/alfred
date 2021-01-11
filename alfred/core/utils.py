@@ -20,9 +20,8 @@ def create_json_response(payload: dict) -> JSONResponse:
 
 
 def create_aliased_response(payload, status_code=status.HTTP_200_OK) -> JSONResponse:
-    return JSONResponse(
-        content=jsonable_encoder(payload, by_alias=True), status_code=status_code
-    )
+    return JSONResponse(content=jsonable_encoder(payload, by_alias=True), status_code=status_code)
+
 
 def validate_phone_number(phone_number: str) -> bool:
     if len(phone_number) != 12:
