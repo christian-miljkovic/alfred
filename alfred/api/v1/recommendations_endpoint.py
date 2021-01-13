@@ -1,20 +1,17 @@
 from alfred.core import config, constants, processors, utils
 from alfred.crud import clients
 from alfred.db.database import DataBase, get_database
-from alfred.lib import TwilioHelper
+from alfred.lib import twilio_helper
 from fastapi import APIRouter, Depends, Request
 import logging
 import json
 import requests
-
-twilio_helper = TwilioHelper()
 
 router = APIRouter()
 
 
 @router.post("/create")
 async def index(request: Request, db: DataBase = Depends(get_database)):
-    logging.warning("got a recommendation")
     async with db.pool.acquire() as conn:
         try:
             twilio_payload = await processors.twilio_request(request)

@@ -14,17 +14,17 @@ test_client = TestClient(app)
 @pytest.fixture
 def twilio_auto_ml_payload() -> dict:
     return {
-        "CurrentTask": "show_friends_table",
-        "CurrentInput": "show friends table",
-        "DialogueSid": "UK2c1d353d522f412aaa8b683123336fb7",
-        "Memory": '{"twilio":{"chat":{"ChannelSid":"CH5b55ab5dbb90479a819c4ae4837f91e3","AssistantName":"","Attributes":{},"ServiceSid":"IS1000c83233e94e54a734966826f3860e","Index":18,"From":"user","MessageSid":"IM8d89997317204139808711f1db18208f"}}}',
-        "DialoguePayloadUrl": "https://autopilot.twilio.com/v1/Assistants/UA58606944b477809f3293100b84e101f4/Dialogues/UK2c1d353d522f412aaa8b683123336fb7",
-        "Channel": "chat",
-        "NextBestTask": "",
-        "CurrentTaskConfidence": "1.0",
-        "AssistantSid": "UA58606944b477809f3293100b84e101f4",
-        "UserIdentifier": "+12035724630",
-        "AccountSid": "ACa03daa661a1b21557ecef006fd7ec3b1",
+        "current_task": "show_friends_table",
+        "current_input": "show friends table",
+        "dialogue_sid": "UK2c1d353d522f412aaa8b683123336fb7",
+        "memory": '{"twilio":{"chat":{"ChannelSid":"CH5b55ab5dbb90479a819c4ae4837f91e3","AssistantName":"","Attributes":{},"ServiceSid":"IS1000c83233e94e54a734966826f3860e","Index":18,"From":"user","MessageSid":"IM8d89997317204139808711f1db18208f"}}}',
+        "dialogue_payloadUrl": "https://autopilot.twilio.com/v1/Assistants/UA58606944b477809f3293100b84e101f4/Dialogues/UK2c1d353d522f412aaa8b683123336fb7",
+        "channel": "chat",
+        "next_best_task": "",
+        "current_task_confidence": "1.0",
+        "assistant_sid": "UA58606944b477809f3293100b84e101f4",
+        "user_identifier": "+12035724630",
+        "account_sid": "ACa03daa661a1b21557ecef006fd7ec3b1",
     }
 
 

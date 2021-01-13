@@ -1,18 +1,18 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, Json
 
 
 class TwilioPayload(BaseModel):
-    current_task: str = Field(None, alias="CurrentTask")
-    current_input: str = Field(None, alias="CurrentInput")
-    dialogue_sid: str = Field(None, alias="DialogueSid")
-    memory: str = Field(None, alias="Memory")
-    dialogue_payload_url: str = Field(None, alias="DialoguePayloadUrl")
-    channel: str = Field(None, alias="Channel")
-    next_best_task: str = Field(None, alias="NextBestTask")
-    current_task_confidence: str = Field(None, alias="CurrentTaskConfidence")
-    assistant_sid: str = Field(None, alias="AssistantSid")
-    user_phone_number: str = Field(None, alias="UserIdentifier")
-    account_sid: str = Field(None, alias="AccountSid")
+    current_task: str
+    current_input: str
+    dialogue_sid: str
+    memory: Json
+    dialogue_payload_url: str
+    channel: str
+    next_best_task: str
+    current_task_confidence: str
+    assistant_sid: str
+    user_phone_number: str = Field(None, alias="user_identifier")
+    account_sid: str
 
     def __str__(self):
         return f"""
