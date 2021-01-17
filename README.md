@@ -5,20 +5,25 @@ description
 [![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/release/python-370/)
 [![Code Style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-## Next Steps
+## Next Feature Steps
 
-1. Remember messages for next day
+1. Ask friends for birthdays
+
+- finish `friends_endpoint_test` -> if no wifi add all tests
+- Create a `PUT` endpoint to update the friends contact info
+- Make the form itself
+
+2. Remember messages for next day
+
+### Extra To-Do's
+
+1. Fix pylint importing error
 2. Add delete and update friend
 3. Re-do how errors are returned based on which endpoint -> https://github.com/andy-landy/traceback_with_variables
+4. Create mermaid diagram
 
 - Double Note: Before any real users get on place integration tests on everything
 - Note: if dyno is not spun up, then user will get an error and twilio will not respond
-
-2. Create mermaid diagram
-3. Add tests for `client_endpoint` and any other functions
-4. Once user is in the system be allowed to ask for table + make suggestions
-5. Create scheduler
-6. Add mixpanel + google analytics
 
 ## Architecture
 

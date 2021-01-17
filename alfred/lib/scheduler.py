@@ -1,7 +1,6 @@
 from collections import defaultdict
 from typing import DefaultDict, List
 from alfred.models import FriendInDB
-import logging
 
 
 def group_friends_by_client_id(friends_list: List[FriendInDB] = []) -> DefaultDict:

@@ -1,11 +1,11 @@
-from pydantic import BaseModel, Field, Json
+from pydantic import BaseModel, Field
 
 
 class TwilioPayload(BaseModel):
     current_task: str
     current_input: str
     dialogue_sid: str
-    memory: Json
+    memory: str
     dialogue_payload_url: str
     channel: str
     next_best_task: str

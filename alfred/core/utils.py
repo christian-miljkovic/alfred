@@ -2,7 +2,6 @@ from fastapi.encoders import jsonable_encoder
 from fastapi import status
 from starlette.responses import JSONResponse, Response
 from twilio.twiml.messaging_response import MessagingResponse
-from typing import DefaultDict, List
 import re
 
 

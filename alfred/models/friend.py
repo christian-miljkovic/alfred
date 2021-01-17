@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, validator
 from uuid import UUID
 from datetime import date
 from alfred.core import utils

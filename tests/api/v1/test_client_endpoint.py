@@ -4,7 +4,6 @@ from starlette.testclient import TestClient
 import alfred.models as model
 import alfred.core.config as config
 import alfred.crud as crud
-import json
 import pytest
 
 API_PREFIX = "alfred/v1/client"

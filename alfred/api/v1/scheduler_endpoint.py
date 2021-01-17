@@ -2,8 +2,7 @@ from alfred.core import constants, utils
 from alfred.crud import clients, friends
 from alfred.db.database import DataBase, get_database
 from alfred.lib import group_friends_by_client_id, twilio_helper
-from fastapi import APIRouter, Body, Depends, Request, status
-from twilio.rest import Client as TwilioClient
+from fastapi import APIRouter, Depends, Request, status
 import logging
 
 router = APIRouter()

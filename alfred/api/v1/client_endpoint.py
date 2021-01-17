@@ -59,7 +59,6 @@ async def show_friends_table(request: Request, db: DataBase = Depends(get_databa
             twilio_payload = await processors.twilio_request(request)
             client = await clients.find_client_by_phone(conn, twilio_payload.user_phone_number)
             message_to_send = constants.SHOW_FRIENDS_TABLE_MESSAGE(str(client.id))
-            logging.warning(message_to_send)
             return twilio_helper.compose_mesage(f"{message_to_send}")
         except Exception as e:
             logging.error(e)

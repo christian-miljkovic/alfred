@@ -1,10 +1,9 @@
-from alfred.core import config, constants, processors, utils
+from alfred.core import config, constants, processors
 from alfred.crud import clients
 from alfred.db.database import DataBase, get_database
 from alfred.lib import twilio_helper
 from fastapi import APIRouter, Depends, Request
 import logging
-import json
 import requests
 
 router = APIRouter()
