@@ -1,13 +1,11 @@
-from pydantic import BaseModel, Field
-from uuid import UUID
+from pydantic import BaseModel
 
 
 class FriendsTablePayload(BaseModel):
-    client_id: UUID = Field(None, alias="id")
-    first_name: str = Field(None, alias="firstName")
-    last_name: str = Field(None, alias="lastName")
-    phone_number: str = Field(None, alias="phoneNumber")
-    birthday: str = Field(None, alias="birthday")
+    first_name: str
+    last_name: str
+    phone_number: str
+    birthday: str
 
     def __str__(self):
-        return "friend"
+        return f"first_name: {self.first_name} last_name: {self.last_name} phone_number: {self.phone_number}  birthday: {self.birthday}"

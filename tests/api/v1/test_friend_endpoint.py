@@ -1,12 +1,12 @@
+from alfred.core import config
+import alfred.core.utils as util
+import alfred.crud as crud
 from alfred.main import app
+import alfred.models as model
 from datetime import datetime
 from pathlib import Path
 from typing import List
 from starlette.testclient import TestClient
-import alfred.models as model
-import alfred.core.config as config
-import alfred.crud as crud
-import alfred.core.utils as util
 import json
 import pytest
 import uuid
@@ -72,12 +72,27 @@ async def friend_in_db(conn, friend_one) -> model.FriendInDB:
     await crud.friends.delete_friend(conn, friend_in_db.id)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture
+async def friends_in_db(conn, friend_list) -> model.FriendInDB:
+    friend_in_db_list = []
+    for friend in friend_list:
+        created_friend = await crud.friends.create_friend(conn, friend)
+        friend_in_db_list.append(created_friend)
+    yield friend_in_db_list
+
+    for friend in friend_in_db_list:
+        await crud.friends.delete_friend(conn, friend.id)
+
+
+@pytest.fixture
 def friend_payload():
-    fixture_data_folder = Path().cwd() / Path("tests/fixtures")
-    fixture_data_file = fixture_data_folder / "create_client_payload.json"
-    with open(fixture_data_file) as json_file:
-        return json.load(json_file)
+    created_client = __setup_fixture_object("create_client_payload.json")
+    return created_client
+
+
+@pytest.fixture(scope="module")
+def twilio_collect_birthday_payload():
+    return __setup_fixture_object("twl_gather_birthday_payload.json")
 
 
 @pytest.mark.asyncio
@@ -92,27 +107,40 @@ async def test_index_success(conn, client_in_db, friend_in_db, mocker):
 
 
 @pytest.mark.asyncio
-async def test_create_success(conn, client_in_db, friend_list, friend_payload, mocker):
+async def test_create_success(conn, client_in_db, friends_in_db, friend_payload, mocker):
     resp = test_client.post(
         f"{API_PREFIX}/{client_in_db.id}/create?token={config.WEBHOOK_SECRET_TOKEN}",
         json=friend_payload,
     )
 
-    # client_in_db.id should equal the client_id field here ... this was off
-    expected_resp_data = util.model_list_to_data_dict(friend_list)
-    resp_dict = dict(resp.json())
-    result = resp_dict.get("data")
-    expected_result = expected_resp_data.get("data")
-    assert result
+    assert resp
     assert resp.status_code == 201
 
-    matched_friends = []
-    for friend in result:
-        for expected_friend in expected_result:
-            if is_same_friend(friend, expected_friend):
-                matched_friends.append({friend.get("client_id"), str(expected_friend.get("client_id"))})
+    payload_friends = resp.json().get("data")
+    matched_friends = set()
+    for friend in payload_friends:
+        for expected_friend in friends_in_db:
+            expected_friend_dict = expected_friend.dict()
+            if is_same_friend(friend, expected_friend_dict):
+                matched_friends.add(str(friend))
 
-    assert len(matched_friends) == len(expected_result)
+    assert len(matched_friends) == len(friends_in_db)
+
+
+@pytest.mark.asyncio
+async def test_collect_birthdays(conn, client_in_db, friends_in_db, twilio_collect_birthday_payload, mocker):
+    send_direct_message_mock = mocker.patch(
+        "alfred.lib.twilio_helper.send_direct_message", return_value=config.TWILIO_ACCOUNT_SID_DEV
+    )
+    resp = test_client.post(
+        f"{API_PREFIX}/birthdays/collect",
+        data=twilio_collect_birthday_payload,
+    )
+    assert send_direct_message_mock.assert_called
+    # In the endpoint send_direct_message_mock is called twice per friend
+    assert send_direct_message_mock.call_count == len(friends_in_db) * 2
+    assert resp.status_code == 200
+    assert resp.json() == {"actions": [{"say": "Just sent to everyone! Now sit back and let me handle all of it :)"}]}
 
 
 def is_same_friend(friend_one: dict, friend_two: dict):
@@ -129,3 +157,13 @@ def is_same_friend(friend_one: dict, friend_two: dict):
         if (field not in friend_one or field not in friend_two) and (friend_one.get(field) != friend_two.get(field)):
             return False
     return True
+
+
+### PRIVATE FUNCTIONS
+
+
+def __setup_fixture_object(file_path):
+    fixture_data_folder = Path().cwd() / Path("tests/fixtures")
+    fixture_data_file = fixture_data_folder / str(file_path)
+    with open(fixture_data_file) as json_file:
+        return json.load(json_file)

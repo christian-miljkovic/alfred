@@ -1,7 +1,7 @@
 from alfred.db.database import DataBase, get_database
 from alfred.core import config, constants, processors, utils
-from alfred.crud import friends
-from alfred.lib import TwilioHelper
+from alfred.crud import clients, friends
+from alfred.lib import twilio_helper
 from datetime import datetime
 from fastapi import APIRouter, Body, Depends, Request, status
 from twilio.rest import Client as TwilioClient
@@ -10,7 +10,6 @@ import alfred.models as models
 import logging
 
 router = APIRouter()
-twilio_helper = TwilioHelper()
 client = TwilioClient(config.TWILIO_ACCOUNT_SID, config.TWILIO_ACCOUNT_AUTH_TOKEN)
 
 
@@ -39,14 +38,7 @@ async def create_friends(client_id: str, payload: Dict = Body(...), db: DataBase
             created_friends = []
             friends_list = payload.get("data")
             for friend in friends_list:
-                payload = models.FriendsTablePayload(**friend)
-                new_friend = models.Friend(
-                    client_id=client_id,
-                    first_name=payload.first_name,
-                    last_name=payload.last_name,
-                    phone_number=payload.phone_number,
-                    birthday=datetime.strptime(payload.birthday, "%Y-%m-%d"),
-                )
+                new_friend = processors.friends_table_request(friend, client_id)
                 friend_in_db = await friends.create_friend(conn, new_friend)
                 created_friends.append(friend_in_db)
 
@@ -88,3 +80,23 @@ async def delete_friends(client_id: str, payload: Dict = Body(...), db: DataBase
                 {"error": constants.FAILURE_MESSAGE},
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             )
+
+
+@router.post("/birthdays/collect")
+async def collect_birthdays(request: Request, db: DataBase = Depends(get_database)):
+    async with db.pool.acquire() as conn:
+        try:
+            twilio_payload = await processors.twilio_request(request)
+            client = await clients.find_client_by_phone(conn, twilio_payload.user_phone_number)
+            client_friends = await friends.get_all_friends_by_client_id(conn, client.id)
+            for friend in client_friends:
+                personal_message_to_send = twilio_payload.current_input
+                message_to_send = constants.SHOW_BIRTHDAY_FORM_MESSAGE(client.id, client.first_name, client.last_name)
+                twilio_helper.send_direct_message(personal_message_to_send, friend.phone_number)
+                twilio_helper.send_direct_message(message_to_send, friend.phone_number)
+
+            return twilio_helper.compose_mesage(constants.SUCCESS_BIRTHDAY_GATHER_MESSAGE)
+        except Exception as e:
+            logging.error(e)
+            failed_message = twilio_helper.compose_mesage(constants.FAILURE_MESSAGE)
+            return failed_message

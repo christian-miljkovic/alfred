@@ -1,13 +1,13 @@
 {
-    "current_task":"gather_birthdays",
-    "current_input":"hey whats up",
-    "dialogue_sid":"UKf77b1f1fca344fa2a185f79934dc54b4",
-    "memory":{"twilio":{"chat":{"ChannelSid":"CH58220986996d450f981bc44b682b7158","AssistantName":"","Attributes":{},"ServiceSid":"ISfd3b3cec61e548229425a59e9cb74c45","Index":26,"From":"user","MessageSid":"IMfa40139a6b2a4403a30691922c5b9364"},"collected_data":{"gather_birthdays_consent":{"answers":{"gathering_consent_one":{"confirm_attempts":1,"answer":"Yes","filled":true,"type":"Twilio.YES_NO","confirmed":true,"validate_attempts":1,"attempts":1},"personal_message":{"answer":"AWU","type":"Twilio.ALPHANUMERIC","filled":true,"attempts":1,"validate_attempts":1,"confirm_attempts":0,"confirmed":false,"media":null}},"date_completed":"2021-01-13T01:55:58Z","date_started":"2021-01-13T01:55:43Z","status":"complete"}}}},
-    "dialogue_payload_url":"https://autopilot.twilio.com/v1/Assistants/UA58606944b477809f3293100b84e101f4/Dialogues/UKf77b1f1fca344fa2a185f79934dc54b4",
-    "channel":"chat",
-    "next_best_task":"greeting",
-    "current_task_confidence":"1.0",
-    "assistant_sid":"UA58606944b477809f3293100b84e101f4",
-    "user_phone_number":"user",
-    "account_sid":"ACa03daa661a1b21557ecef006fd7ec3b1"
+    "CurrentTask":"gather_birthdays",
+    "CurrentInput":"hey whats up",
+    "DialogueSid":"UKf77b1f1fca344fa2a185f79934dc54b4",
+    "Memory":"{twilio:{chat:{ChannelSid:CH58220986996d450f981bc44b682b7158,AssistantName:,Attributes:{},ServiceSid:ISfd3b3cec61e548229425a59e9cb74c45,Index:26,From:user,MessageSid:IMfa40139a6b2a4403a30691922c5b9364},collected_data:{gather_birthdays_consent:{answers:{gathering_consent_one:{confirm_attempts:1,answer:Yes,filled:true,type:Twilio.YES_NO,confirmed:true,validate_attempts:1,attempts:1},personal_message:{answer:AWU,type:Twilio.ALPHANUMERIC,filled:true,attempts:1,validate_attempts:1,confirm_attempts:0,confirmed:false,media:null}},date_completed:2021-01-13T01:55:58Z,date_started:2021-01-13T01:55:43Z,status:complete}}}}",
+    "DialoguePayloadUrl":"https://autopilot.twilio.com/v1/Assistants/UA58606944b477809f3293100b84e101f4/Dialogues/UKf77b1f1fca344fa2a185f79934dc54b4",
+    "Channel":"chat",
+    "NextBestTask":"greeting",
+    "CurrentTaskConfidence":"1.0",
+    "AssistantSid":"UA58606944b477809f3293100b84e101f4",
+    "UserIdentifier":"+12035724630",
+    "AccountSid":"ACa03daa661a1b21557ecef006fd7ec3b1"
  }
