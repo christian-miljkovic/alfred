@@ -1,12 +1,13 @@
 from alfred.core import config
-import alfred.core.utils as util
-import alfred.crud as crud
 from alfred.main import app
-import alfred.models as model
 from datetime import datetime
-from pathlib import Path
 from typing import List
 from starlette.testclient import TestClient
+from tests.helper import setup_fixture_object
+
+import alfred.core.utils as util
+import alfred.crud as crud
+import alfred.models as model
 import json
 import pytest
 import uuid
@@ -86,13 +87,13 @@ async def friends_in_db(conn, friend_list) -> model.FriendInDB:
 
 @pytest.fixture
 def friend_payload():
-    created_client = __setup_fixture_object("create_client_payload.json")
+    created_client = setup_fixture_object("create_client_payload.json")
     return created_client
 
 
 @pytest.fixture(scope="module")
 def twilio_collect_birthday_payload():
-    return __setup_fixture_object("twl_gather_birthday_payload.json")
+    return setup_fixture_object("twl_gather_birthday_payload.json")
 
 
 @pytest.mark.asyncio
@@ -157,13 +158,3 @@ def is_same_friend(friend_one: dict, friend_two: dict):
         if (field not in friend_one or field not in friend_two) and (friend_one.get(field) != friend_two.get(field)):
             return False
     return True
-
-
-### PRIVATE FUNCTIONS
-
-
-def __setup_fixture_object(file_path):
-    fixture_data_folder = Path().cwd() / Path("tests/fixtures")
-    fixture_data_file = fixture_data_folder / str(file_path)
-    with open(fixture_data_file) as json_file:
-        return json.load(json_file)

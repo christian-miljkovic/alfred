@@ -1,8 +1,11 @@
+from alfred.core import config, constants
+from alfred.crud import clients
 from alfred.main import app
 from datetime import datetime
 from starlette.testclient import TestClient
+from tests.helper import setup_fixture_object
+
 import alfred.models as model
-import alfred.core.config as config
 import alfred.crud as crud
 import pytest
 
@@ -12,19 +15,12 @@ test_client = TestClient(app)
 
 @pytest.fixture
 def twilio_auto_ml_payload() -> dict:
-    return {
-        "current_task": "show_friends_table",
-        "current_input": "show friends table",
-        "dialogue_sid": "UK2c1d353d522f412aaa8b683123336fb7",
-        "memory": '{"twilio":{"chat":{"ChannelSid":"CH5b55ab5dbb90479a819c4ae4837f91e3","AssistantName":"","Attributes":{},"ServiceSid":"IS1000c83233e94e54a734966826f3860e","Index":18,"From":"user","MessageSid":"IM8d89997317204139808711f1db18208f"}}}',
-        "dialogue_payloadUrl": "https://autopilot.twilio.com/v1/Assistants/UA58606944b477809f3293100b84e101f4/Dialogues/UK2c1d353d522f412aaa8b683123336fb7",
-        "channel": "chat",
-        "next_best_task": "",
-        "current_task_confidence": "1.0",
-        "assistant_sid": "UA58606944b477809f3293100b84e101f4",
-        "user_identifier": "+12035724630",
-        "account_sid": "ACa03daa661a1b21557ecef006fd7ec3b1",
-    }
+    return setup_fixture_object("twilio_auto_ml_payload.json")
+
+
+@pytest.fixture
+def typeform_payload() -> dict:
+    return setup_fixture_object("type_form_payload.json")
 
 
 @pytest.fixture
@@ -45,6 +41,42 @@ async def client_in_db(conn, client) -> model.ClientInDB:
 
 
 @pytest.mark.asyncio
+async def test_index_no_existing_client(conn, twilio_auto_ml_payload, mocker):
+    resp = test_client.post(f"{API_PREFIX}/", data=twilio_auto_ml_payload)
+    assert resp
+    assert resp.status_code == 200
+    assert resp.json() == {"actions": [{"say": f"{constants.NEW_CLIENT_WELCOME_MESSSAGE}"}]}
+
+
+@pytest.mark.asyncio
+async def test_index_existing_client(conn, client_in_db, twilio_auto_ml_payload, mocker):
+    resp = test_client.post(f"{API_PREFIX}/", data=twilio_auto_ml_payload)
+    assert resp
+    assert resp.status_code == 200
+    assert resp.json() == {
+        "actions": [{"say": f"{constants.RETURNING_CLIENT_WELCOME_MESSSAGE} {client_in_db.first_name}"}]
+    }
+
+
+@pytest.mark.asyncio
+async def test_create_client(conn, typeform_payload, mocker):
+    send_direct_message_mock = mocker.patch(
+        "alfred.lib.twilio_helper.send_direct_message", return_value=config.TWILIO_ACCOUNT_SID_DEV
+    )
+    resp = test_client.post(f"{API_PREFIX}/create", json=typeform_payload)
+
+    # Phone number comes from the fixture
+    client_phone_number = "+12037489763"
+    expected_client = await clients.find_client_by_phone(conn, client_phone_number)
+    client_json_compatible = client_model_to_json(expected_client)
+
+    assert resp
+    assert resp.status_code == 200
+    assert send_direct_message_mock.assert_called
+    assert resp.json() == client_json_compatible
+
+
+@pytest.mark.asyncio
 async def test_show_friends_table(conn, client_in_db, twilio_auto_ml_payload, mocker):
     resp = test_client.post(f"{API_PREFIX}/friends_table", data=twilio_auto_ml_payload)
     assert resp
@@ -56,3 +88,15 @@ async def test_show_friends_table(conn, client_in_db, twilio_auto_ml_payload, mo
             }
         ]
     }
+
+
+### PRIVATE FUNCTIONS
+
+
+def client_model_to_json(client):
+    client_dict = client.dict()
+    client_dict["id"] = str(client_dict["id"])
+    client_dict["birthday"] = client_dict["birthday"].strftime("%Y-%m-%d")
+    client_dict["created_at"] = client_dict["created_at"].strftime("%Y-%m-%d")
+    client_dict["updated_at"] = client_dict["updated_at"].strftime("%Y-%m-%d")
+    return client_dict
