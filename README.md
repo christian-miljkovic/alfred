@@ -9,7 +9,6 @@ description
 
 1. Ask friends for birthdays
 
-- finish `friends_endpoint_test` -> if no wifi add all tests
 - Create a `PUT` endpoint to update the friends contact info
 - Make the form itself
 

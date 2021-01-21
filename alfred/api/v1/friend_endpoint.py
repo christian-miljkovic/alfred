@@ -53,6 +53,25 @@ async def create_friends(client_id: str, payload: Dict = Body(...), db: DataBase
             )
 
 
+@router.post("/{client_id}/update/{friend_id}")
+async def update_friend(
+    client_id: str, friend_id: str, payload: Dict = Body(...), db: DataBase = Depends(get_database)
+):
+    async with db.pool.acquire() as conn:
+        try:
+            friend = payload.get("data")
+            friend_to_update = processors.update_friends_table_request(friend, friend_id)
+            update_friend = await friends.update_friend_by_id(conn, friend_to_update)
+            return utils.create_aliased_response({"data": update_friend}, status.HTTP_200_OK)
+
+        except Exception as e:
+            logging.error(e)
+            return utils.create_aliased_response(
+                {"error": constants.FAILURE_MESSAGE},
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            )
+
+
 @router.post("/{client_id}/delete")
 async def delete_friends(client_id: str, payload: Dict = Body(...), db: DataBase = Depends(get_database)):
     async with db.pool.acquire() as conn:

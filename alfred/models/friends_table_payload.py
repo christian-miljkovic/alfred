@@ -2,9 +2,9 @@ from pydantic import BaseModel
 
 
 class FriendsTablePayload(BaseModel):
-    first_name: str
-    last_name: str
-    phone_number: str
+    first_name: str = None
+    last_name: str = None
+    phone_number: str = None
     birthday: str
 
     def __str__(self):

@@ -3,6 +3,7 @@ from .friend import Friend, FriendInDB
 from .friends_table_payload import FriendsTablePayload
 from .twilio_payload import TwilioPayload
 from .typeform_payload import TypeformPayload
+from .update_friend_payload import UpdateFriendPayload
 
 __all__ = [
     Client,
@@ -12,4 +13,5 @@ __all__ = [
     FriendsTablePayload,
     TwilioPayload,
     TypeformPayload,
+    UpdateFriendPayload,
 ]

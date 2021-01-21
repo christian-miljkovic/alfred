@@ -1,5 +1,5 @@
 from asyncpg import Connection
-from alfred.models import Friend, FriendInDB
+from alfred.models import Friend, FriendInDB, UpdateFriendPayload
 from typing import List, Union
 from uuid import UUID
 import logging
@@ -7,8 +7,8 @@ import logging
 
 async def create_friend(conn: Connection, friend: Friend) -> FriendInDB:
     row = await conn.fetchrow(
-        f"""
-        INSERT INTO {str(friend)}(client_id, first_name, last_name, phone_number, birthday)
+        """
+        INSERT INTO friend(client_id, first_name, last_name, phone_number, birthday)
         VALUES($1, $2, $3, $4, $5)
         RETURNING *
         """,
@@ -21,27 +21,39 @@ async def create_friend(conn: Connection, friend: Friend) -> FriendInDB:
     if row:
         return FriendInDB(**row)
     else:
-        raise UserWarning(f"{str(friend).capitalize()} could not be inserted into the db.")
+        raise UserWarning(f"FRIEND could not be inserted into the db.")
 
 
-async def update_friend(conn: Connection, friend: Friend) -> FriendInDB:
+async def get_friend_by_id(conn: Connection, friend_id: UUID) -> FriendInDB:
+    row = await conn.fetchrow(
+        """
+        SELECT * FROM friend
+        WHERE id = $1
+        """,
+        friend_id,
+    )
+    if row:
+        return FriendInDB(**row)
+    logging.warning(f"Could not find friends associated with client id: {friend_id}.")
+    return None
+
+
+async def update_friend_by_id(conn: Connection, friend: UpdateFriendPayload) -> FriendInDB:
 
     row = await conn.fetchrow(
-        f"""
-        UPDATE {str(friend)}
-        SET client_id = $1, first_name = $2, last_name = $3, phone_number = $4, birthday = $5
+        """
+        UPDATE friend
+        SET birthday = $1
+        WHERE id = $2
         RETURNING *
         """,
-        friend.client_id,
-        friend.first_name,
-        friend.last_name,
-        friend.phone_number,
         friend.birthday,
+        friend.id,
     )
     if row:
         return FriendInDB(**row)
     else:
-        raise UserWarning(f"{str(friend).capitalize()} with id {friend.id} could not be updated.")
+        raise UserWarning(f"FRIEND with id {friend.id} could not be updated.")
 
 
 async def delete_friend(conn: Connection, friend_id: UUID) -> FriendInDB:

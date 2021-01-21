@@ -1,4 +1,4 @@
-from alfred.models import Friend, FriendsTablePayload, TwilioPayload
+from alfred.models import Friend, FriendsTablePayload, TwilioPayload, UpdateFriendPayload
 from datetime import datetime
 from fastapi import Request
 import humps
@@ -28,3 +28,11 @@ def friends_table_request(friend_payload, client_id) -> Friend:
         )
     except Exception as error:
         raise Exception(f"Failed to process friends table request with error message: {error}")
+
+
+def update_friends_table_request(friend_payload, friend_id) -> UpdateFriendPayload:
+    try:
+        normalized_friend = humps.decamelize(friend_payload)
+        return UpdateFriendPayload(id=friend_id, birthday=normalized_friend.get("birthday"))
+    except Exception as error:
+        raise Exception(f"Failed to process update friends table request with error message: {error}")

@@ -8,8 +8,8 @@ import logging
 
 async def create_client(conn: Connection, client: Client) -> ClientInDB:
     row = await conn.fetchrow(
-        f"""
-        INSERT INTO {str(client)} (first_name, last_name, phone_number, birthday)
+        """
+        INSERT INTO client (first_name, last_name, phone_number, birthday)
         VALUES($1, $2, $3, $4)
         RETURNING *
         """,
@@ -27,8 +27,8 @@ async def create_client(conn: Connection, client: Client) -> ClientInDB:
 async def update_client(conn: Connection, client: Client) -> ClientInDB:
 
     row = await conn.fetchrow(
-        f"""
-        UPDATE {str(client)}
+        """
+        UPDATE client
         SET first_name = $1, last_name = $2, phone_number = $3, birthday = $4
         RETURNING *
         """,
