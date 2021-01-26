@@ -8,8 +8,6 @@ description
 ## Next Feature Steps
 
 1. Ask friends for birthdays
-
-- Create a `PUT` endpoint to update the friends contact info
 - Make the form itself
 
 2. Remember messages for next day

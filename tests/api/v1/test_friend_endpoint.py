@@ -134,7 +134,7 @@ async def test_update_success(conn, client_in_db, friend_in_db, mocker):
     expected_birthday = update_friend_payload.get("data").get("birthday")
     expected_friend = await crud.friends.get_friend_by_id(conn, friend_in_db.id)
     expected_friend.birthday = expected_birthday
-    resp = test_client.post(
+    resp = test_client.put(
         f"{API_PREFIX}/{client_in_db.id}/update/{friend_in_db.id}?token={config.WEBHOOK_SECRET_TOKEN}",
         json=update_friend_payload,
     )

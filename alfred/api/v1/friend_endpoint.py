@@ -53,7 +53,7 @@ async def create_friends(client_id: str, payload: Dict = Body(...), db: DataBase
             )
 
 
-@router.post("/{client_id}/update/{friend_id}")
+@router.put("/{client_id}/update/{friend_id}")
 async def update_friend(
     client_id: str, friend_id: str, payload: Dict = Body(...), db: DataBase = Depends(get_database)
 ):
