@@ -31,6 +31,22 @@ async def index(client_id: str, db: DataBase = Depends(get_database)):
             )
 
 
+@router.get("/{friend_id}/client/{client_id}")
+async def get_single_friend(friend_id: str, client_id: str, db: DataBase = Depends(get_database)):
+    async with db.pool.acquire() as conn:
+        try:
+            friend_in_db = await friends.get_friend_by_id_and_client_id(conn, friend_id, client_id)
+            resp = utils.create_aliased_response({"data": friend_in_db.dict()})
+            return resp
+
+        except Exception as e:
+            logging.error(e)
+            return utils.create_aliased_response(
+                {"error": constants.FAILURE_MESSAGE},
+                status_code=status.HTTP_404_NOT_FOUND,
+            )
+
+
 @router.post("/{client_id}/create")
 async def create_friends(client_id: str, payload: Dict = Body(...), db: DataBase = Depends(get_database)):
     async with db.pool.acquire() as conn:
@@ -110,7 +126,9 @@ async def collect_birthdays(request: Request, db: DataBase = Depends(get_databas
             client_friends = await friends.get_all_friends_by_client_id(conn, client.id)
             for friend in client_friends:
                 personal_message_to_send = twilio_payload.current_input
-                message_to_send = constants.SHOW_BIRTHDAY_FORM_MESSAGE(client.id, client.first_name, client.last_name)
+                message_to_send = constants.SHOW_BIRTHDAY_FORM_MESSAGE(
+                    client.id, friend.id, client.first_name, client.last_name
+                )
                 twilio_helper.send_direct_message(personal_message_to_send, friend.phone_number)
                 twilio_helper.send_direct_message(message_to_send, friend.phone_number)
 

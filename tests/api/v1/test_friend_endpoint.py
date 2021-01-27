@@ -6,11 +6,12 @@ from typing import List
 from starlette.testclient import TestClient
 from tests.helper import setup_fixture_object
 
-import alfred.core.utils as util
+import alfred.core.utils as utils
 import alfred.crud as crud
 import json
 import pytest
 import uuid
+import logging
 
 API_PREFIX = "alfred/v1/friend"
 test_client = TestClient(app)
@@ -97,10 +98,10 @@ def twilio_collect_birthday_payload():
 
 
 @pytest.mark.asyncio
-async def test_index_success(conn, client_in_db, friend_in_db, mocker):
+async def test_index_success(conn, client_in_db, friend_in_db):
     resp = test_client.get(f"{API_PREFIX}/{client_in_db.id}?token={config.WEBHOOK_SECRET_TOKEN}")
-    expected_resp_data = util.model_list_to_data_dict([friend_in_db])
-    expected_resp_byte = util.create_aliased_response(expected_resp_data)
+    expected_resp_data = utils.model_list_to_data_dict([friend_in_db])
+    expected_resp_byte = utils.create_aliased_response(expected_resp_data)
     expected_resp = json.loads(expected_resp_byte.body)
 
     assert resp.json() == expected_resp
@@ -108,7 +109,19 @@ async def test_index_success(conn, client_in_db, friend_in_db, mocker):
 
 
 @pytest.mark.asyncio
-async def test_create_success(conn, client_in_db, friends_in_db, friends_payload, mocker):
+async def test_get_single_friend_success(conn, client_in_db, friend_in_db):
+    resp = test_client.get(
+        f"{API_PREFIX}/{friend_in_db.id}/client/{client_in_db.id}?token={config.WEBHOOK_SECRET_TOKEN}"
+    )
+    expected_resp_data = utils.create_aliased_response({"data": friend_in_db.dict()})
+    expected_resp = json.loads(expected_resp_data.body)
+
+    assert resp.json() == expected_resp
+    assert resp.status_code == 200
+
+
+@pytest.mark.asyncio
+async def test_create_success(conn, client_in_db, friends_in_db, friends_payload):
     resp = test_client.post(
         f"{API_PREFIX}/{client_in_db.id}/create?token={config.WEBHOOK_SECRET_TOKEN}",
         json=friends_payload,
@@ -129,7 +142,7 @@ async def test_create_success(conn, client_in_db, friends_in_db, friends_payload
 
 
 @pytest.mark.asyncio
-async def test_update_success(conn, client_in_db, friend_in_db, mocker):
+async def test_update_success(conn, client_in_db, friend_in_db):
     update_friend_payload = {"data": {"birthday": "2005-01-24"}}
     expected_birthday = update_friend_payload.get("data").get("birthday")
     expected_friend = await crud.friends.get_friend_by_id(conn, friend_in_db.id)

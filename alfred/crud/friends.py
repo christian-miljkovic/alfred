@@ -34,7 +34,22 @@ async def get_friend_by_id(conn: Connection, friend_id: UUID) -> FriendInDB:
     )
     if row:
         return FriendInDB(**row)
-    logging.warning(f"Could not find friends associated with client id: {friend_id}.")
+    logging.warning(f"Could not find friends associated with friend id: {friend_id}.")
+    return None
+
+
+async def get_friend_by_id_and_client_id(conn: Connection, friend_id: str, client_id: str) -> FriendInDB:
+    row = await conn.fetchrow(
+        """
+        SELECT * FROM friend
+        WHERE id = $1 AND client_id = $2
+        """,
+        friend_id,
+        client_id,
+    )
+    if row:
+        return FriendInDB(**row)
+    logging.warning(f"Could not find friends associated with friend id: {friend_id} and client id: {client_id}.")
     return None
 
 

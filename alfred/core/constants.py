@@ -9,7 +9,7 @@ FAILURE_MESSAGE = (
 )
 
 SHOW_BIRTHDAY_FORM_MESSAGE = (
-    lambda client_id, first_name, last_name: f"{first_name} wants to save a reminder for your birthday! Please follow this link: {REACT_APP_URL}/birthday/{client_id} and fill in the date so that we can send you birthday messages! - Sent on behalf of {first_name} {last_name} by Alfred their personal assistant"
+    lambda client_id, friend_id, first_name, last_name: f"{first_name} wants to save a reminder for your birthday! Please follow this link: {REACT_APP_URL}/{client_id}/friend/form/{friend_id} and fill in the date so that we can send you birthday messages! - Sent on behalf of {first_name} {last_name} by Alfred their personal assistant"
 )
 
 SHOW_FRIENDS_TABLE_MESSAGE = (

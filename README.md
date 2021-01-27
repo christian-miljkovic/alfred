@@ -8,7 +8,9 @@ description
 ## Next Feature Steps
 
 1. Ask friends for birthdays
+
 - Make the form itself
+- Add a get for single client
 
 2. Remember messages for next day
 
