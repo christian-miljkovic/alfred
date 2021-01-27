@@ -143,7 +143,14 @@ async def test_create_success(conn, client_in_db, friends_in_db, friends_payload
 
 @pytest.mark.asyncio
 async def test_update_success(conn, client_in_db, friend_in_db):
-    update_friend_payload = {"data": {"birthday": "2005-01-24"}}
+    update_friend_payload = {
+        "data": {
+            "birthday": "2005-01-24",
+            "first_name": "Christian",
+            "last_name": "Miljkovic",
+            "phone_number": "+12035724630",
+        }
+    }
     expected_birthday = update_friend_payload.get("data").get("birthday")
     expected_friend = await crud.friends.get_friend_by_id(conn, friend_in_db.id)
     expected_friend.birthday = expected_birthday

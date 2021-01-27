@@ -33,6 +33,6 @@ def friends_table_request(friend_payload, client_id) -> Friend:
 def update_friends_table_request(friend_payload, friend_id) -> UpdateFriendPayload:
     try:
         normalized_friend = humps.decamelize(friend_payload)
-        return UpdateFriendPayload(id=friend_id, birthday=normalized_friend.get("birthday"))
+        return UpdateFriendPayload(id=friend_id, **normalized_friend)
     except Exception as error:
         raise Exception(f"Failed to process update friends table request with error message: {error}")

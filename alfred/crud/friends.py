@@ -58,12 +58,15 @@ async def update_friend_by_id(conn: Connection, friend: UpdateFriendPayload) -> 
     row = await conn.fetchrow(
         """
         UPDATE friend
-        SET birthday = $1
-        WHERE id = $2
+        SET first_name = $2, last_name = $3, phone_number = $4, birthday = $5
+        WHERE id = $1
         RETURNING *
         """,
-        friend.birthday,
         friend.id,
+        friend.first_name,
+        friend.last_name,
+        friend.phone_number,
+        friend.birthday,
     )
     if row:
         return FriendInDB(**row)
