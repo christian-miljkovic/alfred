@@ -1,30 +1,11 @@
 from alfred.core import config
 from alfred.core import utils
-from collections import namedtuple
 from twilio.rest import Client
 from twilio.base.exceptions import TwilioRestException
 import os
 import logging
 
-environment = os.getenv("ENVIRONMENT", "prod")
-
-
-class FakeClient:
-    def __init__(self, **kwargs):
-        self.messages = self.MessageFactory()
-
-    class MessageFactory:
-        @staticmethod
-        def create(**kwargs):
-            Message = namedtuple("Message", ["sid"])
-            message = Message(sid="SM87105da94bff44b999e4e6eb90d8eb6a")
-            return message
-
-
-client = Client(config.TWILIO_ACCOUNT_SID, config.TWILIO_ACCOUNT_AUTH_TOKEN)
-fake_client = FakeClient()
-
-twilio_client = environment == "dev" if fake_client else client
+TWILIO_CLIENT = Client(config.TWILIO_ACCOUNT_SID, config.TWILIO_ACCOUNT_AUTH_TOKEN)
 
 
 def compose_mesage(message, memory=None, item_to_add=None):
@@ -49,7 +30,7 @@ def remember_this_item(current_message, current_memory, item):
 
 def send_direct_message(message, to_phone_number=config.TO_PHONE_NUMBER):
     try:
-        message = twilio_client.messages.create(body=message, from_=config.FROM_PHONE_NUMBER, to=to_phone_number)
+        message = TWILIO_CLIENT.messages.create(body=message, from_=config.FROM_PHONE_NUMBER, to=to_phone_number)
     except TwilioRestException as error:
         logging.error(f"Error sending twilio message: {error}")
         return
