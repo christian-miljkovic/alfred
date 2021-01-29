@@ -1,15 +1,15 @@
 {
     "data": [
-        {            
-            "first_name": "Christian",
-            "last_name": "Miljkovic",
-            "phone_number": "+12035724630",
+        {
+            "firstName": "Christian",
+            "lastName": "Miljkovic",
+            "phoneNumber": "+12035724630",
             "birthday": "1995-01-24"
         },
         {
-            "first_name": "Erick",
-            "last_name": "Marcello",
-            "phone_number": "+12035006397",
+            "firstName": "Erick",
+            "lastName": "Marcello",
+            "phoneNumber": "+12035006397",
             "birthday": "2000-01-24"
         }
     ]

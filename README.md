@@ -7,10 +7,11 @@ description
 
 ## Next Feature Steps
 
-1. Ask friends for birthdays
+0. Ask friends for birthdays
 
-- Make the form itself
+- Fix: ERROR [friend_endpoint] 'bool' object has no attribute 'messages' when doing `/birthday/collect`
 
+1. Check that the scheduler is working
 2. Remember messages for next day
 
 ### Extra To-Do's

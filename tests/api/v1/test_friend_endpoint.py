@@ -11,7 +11,6 @@ import alfred.crud as crud
 import json
 import pytest
 import uuid
-import logging
 
 API_PREFIX = "alfred/v1/friend"
 test_client = TestClient(app)
@@ -146,9 +145,9 @@ async def test_update_success(conn, client_in_db, friend_in_db):
     update_friend_payload = {
         "data": {
             "birthday": "2005-01-24",
-            "first_name": "Christian",
-            "last_name": "Miljkovic",
-            "phone_number": "+12035724630",
+            "firstName": "Christian",
+            "lastName": "Miljkovic",
+            "phoneNumber": "+12035724630",
         }
     }
     expected_birthday = update_friend_payload.get("data").get("birthday")
