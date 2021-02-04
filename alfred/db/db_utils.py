@@ -14,6 +14,7 @@ async def connect_to_postgres():
         str(DATABASE_URL),
         min_size=MIN_CONNECTIONS_COUNT,
         max_size=MAX_CONNECTIONS_COUNT,
+        ssl="require",
     )
     logging.info("Connected to database")
 
