@@ -24,7 +24,6 @@ def friends_table_request(friend_payload, client_id) -> Friend:
             first_name=payload.first_name,
             last_name=payload.last_name,
             phone_number=payload.phone_number,
-            birthday=datetime.strptime(payload.birthday, "%Y-%m-%d"),
         )
     except Exception as error:
         raise Exception(f"Failed to process friends table request with error message: {error}")

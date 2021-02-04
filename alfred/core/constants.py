@@ -18,12 +18,12 @@ SHOW_FRIENDS_TABLE_MESSAGE = (
 
 SUCCESS_BIRTHDAY_GATHER_MESSAGE = "Just sent to everyone! Now sit back and let me handle all of it :)"
 
-NEW_CLIENT_WELCOME_MESSSAGE = "Hi, let's get started with getting to know each other. It'll be easier from here: https://christianmmiljkovic.typeform.com/to/TRTx7YTG"
+NEW_CLIENT_WELCOME_MESSSAGE = "Hi, let's get started with getting to know each other. It'll be easier if you put your info in here: https://christianmmiljkovic.typeform.com/to/TRTx7YTG"
 
 RETURNING_CLIENT_WELCOME_MESSSAGE = "Hey! Hope you're having a great day! How can I help you?"
 
 REDIRECT_TO_FRIENDS_TABLE_MESSAGE = (
-    lambda client_id: f"Head on over to {REACT_APP_URL}/table/{client_id} to add some friends birthdays! You can now just say 'show my friends' to get the link to your friends table!"
+    lambda client_id: f"Head on over to {REACT_APP_URL}/table/{client_id} to add some friends to your contacts list! You can now just say 'show my friends' to get the link to your contact list or 'get friends birthdays' and I'll reach out so you don't have to!"
 )
 
 RECOMMENDATION_MESSAGE = "Thanks for your recommendation, I'll be sure to start cookin' on that!"

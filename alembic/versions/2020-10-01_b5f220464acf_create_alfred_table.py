@@ -49,7 +49,7 @@ def upgrade():
         sa.Column("first_name", sa.String, nullable=False),
         sa.Column("last_name", sa.String, nullable=False),
         sa.Column("phone_number", sa.String, nullable=False),
-        sa.Column("birthday", sa.Date, nullable=False),
+        sa.Column("birthday", sa.Date, nullable=True),
         sa.Column("created_at", sa.DateTime, server_default=sa.text("now()")),
         sa.Column("updated_at", sa.DateTime, server_default=sa.text("now()")),
     )
