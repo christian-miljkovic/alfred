@@ -127,13 +127,10 @@ async def collect_birthdays(request: Request, db: DataBase = Depends(get_databas
             client_friends = await friends.get_all_friends_by_client_id(conn, client.id)
             logging.warning(client_friends)
             for friend in client_friends:
-                personal_message_to_send = twilio_payload.current_input
-                logging.warning(personal_message_to_send)
                 message_to_send = constants.SHOW_BIRTHDAY_FORM_MESSAGE(
                     client.id, friend.id, client.first_name, client.last_name
                 )
                 logging.warning(message_to_send)
-                twilio_helper.send_direct_message(personal_message_to_send, friend.phone_number)
                 twilio_helper.send_direct_message(message_to_send, friend.phone_number)
 
             return twilio_helper.compose_mesage(constants.SUCCESS_BIRTHDAY_GATHER_MESSAGE)

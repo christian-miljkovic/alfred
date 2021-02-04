@@ -174,7 +174,7 @@ async def test_collect_birthdays(conn, client_in_db, friends_in_db, twilio_colle
     )
     assert send_direct_message_mock.assert_called
     # In the endpoint send_direct_message_mock is called twice per friend
-    assert send_direct_message_mock.call_count == len(friends_in_db) * 2
+    assert send_direct_message_mock.call_count == len(friends_in_db) 
     assert resp.status_code == 200
     assert resp.json() == {"actions": [{"say": "Just sent to everyone! Now sit back and let me handle all of it :)"}]}
 
