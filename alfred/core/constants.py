@@ -23,7 +23,7 @@ NEW_CLIENT_WELCOME_MESSSAGE = "Hi, let's get started with getting to know each o
 RETURNING_CLIENT_WELCOME_MESSSAGE = "Hey! Hope you're having a great day! How can I help you?"
 
 REDIRECT_TO_FRIENDS_TABLE_MESSAGE = (
-    lambda client_id: f"Head on over to {REACT_APP_URL}/table/{client_id} to add some friends to your contacts list! You can now just say 'show my friends' to get the link to your contact list or 'get friends birthdays' and I'll reach out so you don't have to!"
+    lambda client_id: f"Head on over to {REACT_APP_URL}/table/{client_id} to add some friends to your contacts list! You can now just say 'show my friends' to get the link to your contact list!"
 )
 
 RECOMMENDATION_MESSAGE = "Thanks for your recommendation, I'll be sure to start cookin' on that!"
