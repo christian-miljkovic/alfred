@@ -16,7 +16,7 @@ SHOW_FRIENDS_TABLE_MESSAGE = (
     lambda client_id: f"Here's the link {REACT_APP_URL}/table/{client_id} let me know if you need anything else!"
 )
 
-SUCCESS_BIRTHDAY_GATHER_MESSAGE = "Just sent to everyone! Now sit back and let me handle all of it :)"
+SUCCESS_BIRTHDAY_GATHER_MESSAGE = "Now sit back and let me handle all of it :)"
 
 NEW_CLIENT_WELCOME_MESSSAGE = "Hi, let's get started with getting to know each other. It'll be easier if you put your info in here: https://christianmmiljkovic.typeform.com/to/TRTx7YTG"
 

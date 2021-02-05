@@ -1,6 +1,8 @@
 import os
 from databases import DatabaseURL
 
+ENVIRONMENT = os.getenv("ENVIRONMENT", "production")
+
 PROJECT_NAME = os.getenv("PROJECT_NAME", "alfred")
 DATABASE_URL = DatabaseURL(os.getenv("DATABASE_URL"))
 MAX_CONNECTIONS_COUNT = int(os.getenv("MAX_CONNECTIONS_COUNT", 10))

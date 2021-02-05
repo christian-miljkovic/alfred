@@ -7,11 +7,8 @@ description
 
 ## Next Feature Steps
 
-0. Ask friends for birthdays
-
-- Fix: ERROR [friend_endpoint] 'bool' object has no attribute 'messages' when doing `/birthday/collect` -> figure out how to unit test send message (check twilio docs)
-
-1. Check that the scheduler is working
+1. Collect birthday
+  - Don't ask for friends birthday if their birthday is already saved
 2. Remember messages for next day
 
 ### Extra To-Do's

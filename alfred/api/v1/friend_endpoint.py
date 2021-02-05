@@ -131,7 +131,9 @@ async def collect_birthdays(request: Request, db: DataBase = Depends(get_databas
                     client.id, friend.id, client.first_name, client.last_name
                 )
                 logging.warning(message_to_send)
-                twilio_helper.send_direct_message(message_to_send, friend.phone_number)
+                
+                if not friend.birthday:
+                    twilio_helper.send_direct_message(message_to_send, friend.phone_number)
 
             return twilio_helper.compose_mesage(constants.SUCCESS_BIRTHDAY_GATHER_MESSAGE)
         except Exception as e:
