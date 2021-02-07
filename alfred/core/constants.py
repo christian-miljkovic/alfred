@@ -9,7 +9,7 @@ FAILURE_MESSAGE = (
 )
 
 SHOW_BIRTHDAY_FORM_MESSAGE = (
-    lambda client_id, friend_id, first_name, last_name: f"{first_name} wants to save a reminder for your birthday! Please follow this link: {REACT_APP_URL}/{client_id}/friend/form/{friend_id} and fill in the date so that we can send you birthday messages! - Sent on behalf of {first_name} {last_name} by Alfred their personal assistant"
+    lambda client_id, friend_id, client_first_name, client_last_name, friend_first_name: f"Hey {friend_first_name}! {client_first_name} wants to make a reminder for your birthday! Please follow this link: {REACT_APP_URL}/{client_id}/friend/form/{friend_id} to fill in your info! - Sent on behalf of {client_first_name} {client_last_name} by Alfred their personal assistant. More info at http://alfred-penny.com"
 )
 
 SHOW_FRIENDS_TABLE_MESSAGE = (
@@ -18,9 +18,9 @@ SHOW_FRIENDS_TABLE_MESSAGE = (
 
 SUCCESS_BIRTHDAY_GATHER_MESSAGE = "Now sit back and let me handle all of it :)"
 
-NEW_CLIENT_WELCOME_MESSSAGE = "Hi, let's get started with getting to know each other. It'll be easier if you put your info in here: https://christianmmiljkovic.typeform.com/to/TRTx7YTG"
+NEW_CLIENT_WELCOME_MESSSAGE = "Hi, let's get started with getting to know each other. It'll be easier if you put your info in here: https://christianmmiljkovic.typeform.com/to/TRTx7YTG also to see what I can do just say 'what can you do'"
 
-RETURNING_CLIENT_WELCOME_MESSSAGE = "Hey! Hope you're having a great day! How can I help you?"
+RETURNING_CLIENT_WELCOME_MESSSAGE = (lambda client_first_name: f"Hey {client_first_name}! Hope you're having a great day! How can I help you? You can also say 'what can you do' to find out more!")
 
 REDIRECT_TO_FRIENDS_TABLE_MESSAGE = (
     lambda client_id: f"Head on over to {REACT_APP_URL}/table/{client_id} to add some friends to your contacts list! You can now just say 'show my friends' to get the link to your contact list!"

@@ -7,8 +7,9 @@ description
 
 ## Next Feature Steps
 
-1. Collect birthday
-  - Don't ask for friends birthday if their birthday is already saved
+1. Constants Text
+  - Check that link to website works
+  - See if you can add a link to new message within constant message 
 2. Remember messages for next day
 
 ### Extra To-Do's

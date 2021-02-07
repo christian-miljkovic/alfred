@@ -19,10 +19,9 @@ async def index(request: Request, db: DataBase = Depends(get_database)):
             twilio_payload = await processors.twilio_request(request)
             existing_client = await clients.find_client_by_phone(conn, twilio_payload.user_phone_number)
             if existing_client:
-                return twilio_helper.compose_mesage(
-                    f"{constants.RETURNING_CLIENT_WELCOME_MESSSAGE} {existing_client.first_name}"
-                )
-            message = twilio_helper.compose_mesage(f"{constants.NEW_CLIENT_WELCOME_MESSSAGE}")
+                return twilio_helper.compose_mesage(constants.RETURNING_CLIENT_WELCOME_MESSSAGE(existing_client.first_name))
+                
+            message = twilio_helper.compose_mesage(constants.NEW_CLIENT_WELCOME_MESSSAGE)
             return message
         except Exception as e:
             logging.error(e)

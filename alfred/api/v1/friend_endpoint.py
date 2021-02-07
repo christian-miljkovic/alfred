@@ -127,8 +127,9 @@ async def collect_birthdays(request: Request, db: DataBase = Depends(get_databas
             client_friends = await friends.get_all_friends_by_client_id(conn, client.id)
             logging.warning(client_friends)
             for friend in client_friends:
+                # could use a test to prove that the correct message is sent
                 message_to_send = constants.SHOW_BIRTHDAY_FORM_MESSAGE(
-                    client.id, friend.id, client.first_name, client.last_name
+                    client.id, friend.id, client.first_name, client.last_name, friend.first_name
                 )
                 logging.warning(message_to_send)
                 

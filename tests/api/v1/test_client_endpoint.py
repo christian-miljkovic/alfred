@@ -54,7 +54,7 @@ async def test_index_existing_client(conn, client_in_db, twilio_auto_ml_payload,
     assert resp
     assert resp.status_code == 200
     assert resp.json() == {
-        "actions": [{"say": f"{constants.RETURNING_CLIENT_WELCOME_MESSSAGE} {client_in_db.first_name}"}]
+        "actions": [{"say": constants.RETURNING_CLIENT_WELCOME_MESSSAGE(client_in_db.first_name)}]
     }
 
 
