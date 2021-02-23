@@ -12,6 +12,7 @@ import json
 import pytest
 import uuid
 import random
+import logging
 
 API_PREFIX = "alfred/v1/friend"
 test_client = TestClient(app)
@@ -60,9 +61,10 @@ def friend_two(client_in_db) -> FriendInDB:
         created_at=datetime.now(),
         updated_at=datetime.now(),
     )
-    
+
+
 @pytest.fixture
-def friend_two(client_in_db) -> FriendInDB:
+def friend_with_birthday(client_in_db) -> FriendInDB:
     return FriendInDB(
         id=uuid.uuid4(),
         client_id=client_in_db.id,
@@ -95,7 +97,7 @@ async def friends_in_db(conn, friend_list) -> FriendInDB:
         friend_in_db_list.append(created_friend)
 
     rand_friend = friend_in_db_list.pop(random.randint(0, 1)).dict()
-    rand_friend["birthday"] = datetime.strptime("2000-01-24", "%Y-%m-%d") 
+    rand_friend["birthday"] = datetime.strptime("2000-01-24", "%Y-%m-%d")
     rand_friend_in_db = await crud.friends.update_friend_by_id(conn, FriendInDB(**rand_friend))
     friend_in_db_list.append(rand_friend_in_db)
     yield friend_in_db_list
@@ -139,6 +141,18 @@ async def test_get_single_friend_success(conn, client_in_db, friend_in_db):
 
 
 @pytest.mark.asyncio
+async def test_delete_friend_success(conn, friend_in_db):
+    resp = test_client.delete(f"{API_PREFIX}/{friend_in_db.id}?token={config.WEBHOOK_SECRET_TOKEN}")
+    expected_resp_data = utils.create_aliased_response({"data": str(friend_in_db.dict())})
+    expected_resp = json.loads(expected_resp_data.body)
+
+    expected_empty_friend = await crud.friends.get_friend_by_id(conn, friend_in_db.id)
+    assert not expected_empty_friend
+    assert resp.json() == expected_resp
+    assert resp.status_code == 200
+
+
+@pytest.mark.asyncio
 async def test_create_success(conn, client_in_db, friends_in_db, friends_payload):
     resp = test_client.post(
         f"{API_PREFIX}/{client_in_db.id}/create?token={config.WEBHOOK_SECRET_TOKEN}",
@@ -156,7 +170,7 @@ async def test_create_success(conn, client_in_db, friends_in_db, friends_payload
             if is_same_friend(friend, expected_friend_dict):
                 matched_friends.add(str(friend))
 
-    assert len(matched_friends) == len(friends_in_db) 
+    assert len(matched_friends) == len(friends_in_db)
 
 
 @pytest.mark.asyncio
@@ -193,7 +207,7 @@ async def test_collect_birthdays(conn, client_in_db, friends_in_db, twilio_colle
     )
     assert send_direct_message_mock.assert_called
     # Should be 1 because only one friend doesn't have birthday collected
-    assert send_direct_message_mock.call_count == 1 
+    assert send_direct_message_mock.call_count == 1
     assert resp.status_code == 200
     assert resp.json() == {"actions": [{"say": "Now sit back and let me handle all of it :)"}]}
 

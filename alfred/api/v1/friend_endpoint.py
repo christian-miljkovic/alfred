@@ -88,25 +88,15 @@ async def update_friend(
             )
 
 
-@router.post("/{client_id}/delete")
-async def delete_friends(client_id: str, payload: Dict = Body(...), db: DataBase = Depends(get_database)):
+@router.delete("/{friend_id}")
+async def delete_friends(friend_id: str, payload: Dict = Body(...), db: DataBase = Depends(get_database)):
     async with db.pool.acquire() as conn:
         try:
+            logging.warning("test test")
             friend = payload.get("data")
             payload = models.FriendsTablePayload(**friend)
-            new_friend = models.Friend(
-                client_id=client_id,
-                first_name=payload.first_name,
-                last_name=payload.last_name,
-                phone_number=payload.phone_number,
-                birthday=datetime.strptime(payload.birthday, "%Y-%m-%d"),
-            )
-
-            # TO SEND BACK DELETION MESSAGE
-            deleted_friend = await friends.delete_friend(conn, new_friend)
-            message = "client with id: {client_id} successfully deleted {}"
-            resp = {"data": "client with id: {client_id} successfully delete "}
-
+            deleted_friend = await friends.delete_friend(conn, friend_id)
+            resp = {"data": str(deleted_friend.dict())}
             return utils.create_aliased_response(resp, status.HTTP_202_ACCEPTED)
 
         except Exception as e:
@@ -132,7 +122,7 @@ async def collect_birthdays(request: Request, db: DataBase = Depends(get_databas
                     client.id, friend.id, client.first_name, client.last_name, friend.first_name
                 )
                 logging.warning(message_to_send)
-                
+
                 if not friend.birthday:
                     twilio_helper.send_direct_message(message_to_send, friend.phone_number)
 
