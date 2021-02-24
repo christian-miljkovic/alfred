@@ -143,13 +143,11 @@ async def test_get_single_friend_success(conn, client_in_db, friend_in_db):
 @pytest.mark.asyncio
 async def test_delete_friend_success(conn, friend_in_db):
     resp = test_client.delete(f"{API_PREFIX}/{friend_in_db.id}?token={config.WEBHOOK_SECRET_TOKEN}")
-    expected_resp_data = utils.create_aliased_response({"data": str(friend_in_db.dict())})
+    expected_resp_data = utils.create_aliased_response({"data": friend_in_db.id})
     expected_resp = json.loads(expected_resp_data.body)
 
-    expected_empty_friend = await crud.friends.get_friend_by_id(conn, friend_in_db.id)
-    assert not expected_empty_friend
     assert resp.json() == expected_resp
-    assert resp.status_code == 200
+    assert resp.status_code == 202
 
 
 @pytest.mark.asyncio

@@ -89,14 +89,11 @@ async def update_friend(
 
 
 @router.delete("/{friend_id}")
-async def delete_friends(friend_id: str, payload: Dict = Body(...), db: DataBase = Depends(get_database)):
+async def delete_friends(friend_id: str, db: DataBase = Depends(get_database)):
     async with db.pool.acquire() as conn:
         try:
-            logging.warning("test test")
-            friend = payload.get("data")
-            payload = models.FriendsTablePayload(**friend)
-            deleted_friend = await friends.delete_friend(conn, friend_id)
-            resp = {"data": str(deleted_friend.dict())}
+            await friends.delete_friend(conn, friend_id)        
+            resp = {"data": friend_id}
             return utils.create_aliased_response(resp, status.HTTP_202_ACCEPTED)
 
         except Exception as e:

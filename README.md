@@ -8,16 +8,17 @@ description
 ## Next Feature Steps
 
 1. Constants Text
-  - Check that link to website works
-  - See if you can add a link to new message within constant message 
+
+- Check that link to website works
+- See if you can add a link to new message within constant message
+
 2. Remember messages for next day
 
 ### Extra To-Do's
 
-1. Fix pylint importing error
-2. Add delete and update friend
-3. Re-do how errors are returned based on which endpoint -> https://github.com/andy-landy/traceback_with_variables
-4. Create mermaid diagram
+1. Update friend
+2. Re-do how errors are returned based on which endpoint -> https://github.com/andy-landy/traceback_with_variables
+3. Create mermaid diagram
 
 - Double Note: Before any real users get on place integration tests on everything
 - Note: if dyno is not spun up, then user will get an error and twilio will not respond

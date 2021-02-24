@@ -74,18 +74,16 @@ async def update_friend_by_id(conn: Connection, friend: UpdateFriendPayload) -> 
 
 
 async def delete_friend(conn: Connection, friend_id: UUID) -> FriendInDB:
-    row = await conn.fetchrow(
-        """
-        DELETE FROM friend
-        WHERE id = $1
-        RETURNING *
-        """,
-        friend_id,
-    )
-    if row:
-        return FriendInDB(**row)
-    else:
-        raise UserWarning(f"FRIEND with id {friend_id} could not be deleted from the db.")
+    try:
+        await conn.execute("""
+            DELETE FROM friend
+            WHERE id = $1
+            RETURNING *
+            """,
+            friend_id,
+        )
+    except Exception as e:
+        raise UserWarning(f"FRIEND with id {friend_id} could not be deleted from the db. Returned this error: {e}")
 
 
 async def get_all_friends_by_client_id(conn: Connection, client_id: str) -> List[Union[FriendInDB, None]]:
