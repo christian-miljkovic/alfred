@@ -8,14 +8,15 @@ import logging
 async def create_friend(conn: Connection, friend: Friend) -> FriendInDB:
     row = await conn.fetchrow(
         """
-        INSERT INTO friend(client_id, first_name, last_name, phone_number)
-        VALUES($1, $2, $3, $4)
+        INSERT INTO friend(client_id, first_name, last_name, phone_number, birthday)
+        VALUES($1, $2, $3, $4, $5)
         RETURNING *
         """,
         friend.client_id,
         friend.first_name,
         friend.last_name,
         friend.phone_number,
+        friend.birthday,
     )
     if row:
         return FriendInDB(**row)
